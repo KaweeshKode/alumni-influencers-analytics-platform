@@ -140,9 +140,8 @@ class Auth extends CI_Controller
         if (!$this->session->userdata('logged_in')) {
             redirect('auth/login');
         }
-
-        $data['message'] = 'Welcome, ' . html_escape($this->session->userdata('user_name')) . '!';
-        $this->load->view('auth/auth_message', $data);
+        
+        $this->load->view('auth/dashboard');
     }
 
     public function logout()
