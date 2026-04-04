@@ -57,6 +57,8 @@
         <li><a href="<?php echo site_url('profile/licences'); ?>">Manage Licences</a></li>
         <li><a href="<?php echo site_url('profile/short_courses'); ?>">Manage Short Courses</a></li>
         <li><a href="<?php echo site_url('profile/employment'); ?>">Manage Employment History</a></li>
+        <!-- bidding url -->
+        <li><a href="<?php echo site_url('bidding'); ?>">Blind Bidding Dashboard</a></li>
     </ul>
 </body>
 </html>
