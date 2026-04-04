@@ -1,21 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Place Bid</title>
+    <title><?php echo !empty($user_bid) ? 'Increase Your Bid' : 'Place Your Bid'; ?></title>
 </head>
 <body>
     <h2><?php echo !empty($user_bid) ? 'Increase Your Bid' : 'Place Your Bid'; ?></h2>
+
+    <?php if ($this->session->flashdata('error')) : ?>
+        <p style="color:red;"><?php echo html_escape($this->session->flashdata('error')); ?></p>
+    <?php endif; ?>
+
+    <?php if ($this->session->flashdata('success')) : ?>
+        <p style="color:green;"><?php echo html_escape($this->session->flashdata('success')); ?></p>
+    <?php endif; ?>
 
     <?php echo validation_errors('<p style="color:red;">', '</p>'); ?>
 
     <?php echo form_open('bidding/place_bid'); ?>
 
-    <p>Bid Amount:
-        <input type="number" step="0.01" min="0.01" name="bid_amount" value="">
+    <p>
+        <label for="bid_amount">Bid Amount:</label>
+        <input
+            type="number"
+            step="0.01"
+            min="0.01"
+            name="bid_amount"
+            id="bid_amount"
+            value="<?php echo set_value('bid_amount'); ?>"
+            required
+        >
     </p>
 
     <?php if (!empty($user_bid)) : ?>
-        <p>Your current bid is <?php echo number_format($user_bid->bid_amount, 2); ?>. New bid must be higher.</p>
+        <p>
+            <strong>Your current bid:</strong>
+            <?php echo number_format($user_bid->bid_amount, 2); ?>
+        </p>
+        <p>New bid must be higher than your current bid.</p>
+    <?php else : ?>
+        <p>You are placing a new blind bid for today’s slot.</p>
     <?php endif; ?>
 
     <p><button type="submit">Submit Bid</button></p>

@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Bid_model extends CI_Model
 {
-    private $table = 'bids';
+    protected $table = 'bids';
 
     public function get_user_bid_for_slot($slot_id, $user_id)
     {
@@ -20,6 +20,8 @@ class Bid_model extends CI_Model
 
     public function update_bid($id, $data)
     {
+        $data['updated_at'] = date('Y-m-d H:i:s');
+
         return $this->db->where('id', $id)->update($this->table, $data);
     }
 
@@ -39,6 +41,7 @@ class Bid_model extends CI_Model
         return $this->db
             ->where('slot_id', $slot_id)
             ->order_by('bid_amount', 'DESC')
+            ->order_by('updated_at', 'ASC')
             ->get($this->table)
             ->result();
     }

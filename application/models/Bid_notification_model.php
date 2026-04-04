@@ -18,4 +18,11 @@ class Bid_notification_model extends CI_Model
             ->get($this->table)
             ->result();
     }
+
+    public function mark_all_as_read($user_id)
+    {
+        return $this->db
+            ->where('user_id', $user_id)
+            ->update($this->table, ['is_read' => 1]);
+    }
 }
