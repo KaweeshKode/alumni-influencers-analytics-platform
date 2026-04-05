@@ -52,3 +52,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'welcome';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+
+$route['apitokens'] = 'ApiTokens/index';
+$route['apitokens/create'] = 'ApiTokens/create';
+$route['apitokens/revoke/(:num)'] = 'ApiTokens/revoke/$1';
+$route['apitokens/usage'] = 'ApiTokens/usage';
+
+$route['api/featured-today'] = 'Api/featuredToday';
+$route['api/alumni'] = 'Api/alumni';
+$route['api/analytics-summary'] = 'Api/analyticsSummary';
