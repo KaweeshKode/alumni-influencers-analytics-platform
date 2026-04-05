@@ -61,3 +61,7 @@ $route['apitokens/usage'] = 'ApiTokens/usage';
 $route['api/featured-today'] = 'Api/featuredToday';
 $route['api/alumni'] = 'Api/alumni';
 $route['api/analytics-summary'] = 'Api/analyticsSummary';
+
+$route['docs'] = 'Docs/index';
+$route['api-docs'] = 'Docs/index';
+$route['openapi.json'] = 'OpenApi/json';

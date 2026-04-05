@@ -1,0 +1,243 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Alumni Influencers Public Developer API",
+    "description": "Public developer API for accessing featured alumnus and alumni analytics data using bearer tokens.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost/practice/cw/index.php",
+      "description": "Local development server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "API Token"
+      }
+    },
+    "schemas": {
+      "AlumniProfile": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "user_id": {
+            "type": "integer",
+            "example": 5
+          },
+          "full_name": {
+            "type": "string",
+            "example": "John Doe"
+          },
+          "bio": {
+            "type": "string",
+            "example": "Software Engineer at ABC Ltd"
+          },
+          "linkedin_url": {
+            "type": "string",
+            "example": "https://linkedin.com/in/johndoe"
+          },
+          "profile_image": {
+            "type": "string",
+            "example": "profile_123.jpg"
+          }
+        }
+      },
+      "FeaturedTodayResponse": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "example": "2026-04-05"
+          },
+          "featured_alumnus": {
+            "$ref": "#/components/schemas/AlumniProfile"
+          }
+        }
+      },
+      "AnalyticsSummaryResponse": {
+        "type": "object",
+        "properties": {
+          "total_alumni": {
+            "type": "integer",
+            "example": 25
+          },
+          "total_degrees": {
+            "type": "integer",
+            "example": 40
+          },
+          "total_certifications": {
+            "type": "integer",
+            "example": 55
+          },
+          "total_short_courses": {
+            "type": "integer",
+            "example": 31
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "Missing bearer token."
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/api/featured-today": {
+      "get": {
+        "summary": "Get today's featured alumnus",
+        "description": "Returns the alumnus featured for the current day. Intended for the Mobile AR App client.",
+        "tags": ["Featured Alumnus"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Featured alumnus returned successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeaturedTodayResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, invalid, expired, or revoked token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Token does not have the required scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No featured alumnus found for today",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/alumni": {
+      "get": {
+        "summary": "Get all alumni profiles",
+        "description": "Returns a list of alumni profiles. Intended for the Analytics Dashboard client.",
+        "tags": ["Alumni"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Alumni profiles returned successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AlumniProfile"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, invalid, expired, or revoked token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Token does not have the required scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/analytics-summary": {
+      "get": {
+        "summary": "Get analytics summary",
+        "description": "Returns summary counts for alumni and achievements. Intended for the Analytics Dashboard client.",
+        "tags": ["Analytics"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Analytics summary returned successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnalyticsSummaryResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, invalid, expired, or revoked token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Token does not have the required scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
