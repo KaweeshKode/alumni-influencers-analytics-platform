@@ -153,3 +153,12 @@ $route['api/analytics-summary'] = 'Api/analyticsSummary';
 $route['docs'] = 'Docs/index';
 $route['api-docs'] = 'Docs/index';
 $route['openapi.json'] = 'OpenApi/json';
+
+
+/*
+|--------------------------------------------------------------------------
+| University Analytics Dashboard - CW2
+|--------------------------------------------------------------------------
+*/
+$route['analytics'] = 'analytics/dashboard';
+$route['analytics/dashboard'] = 'analytics/dashboard';
