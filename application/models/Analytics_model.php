@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 class Analytics_model extends CI_Model
 {
@@ -88,5 +88,78 @@ class Analytics_model extends CI_Model
             ->limit($limit)
             ->get()
             ->result();
+    }
+
+    public function get_alumni_filters()
+    {
+        $programmes = $this->db
+            ->select('degree_name')
+            ->from('profile_degrees')
+            ->where('degree_name IS NOT NULL')
+            ->where('degree_name !=', '')
+            ->group_by('degree_name')
+            ->order_by('degree_name', 'ASC')
+            ->get()
+            ->result();
+
+        $graduation_years = $this->db
+            ->select('graduation_year')
+            ->from('alumni_profiles')
+            ->where('graduation_year IS NOT NULL')
+            ->where('graduation_year !=', '')
+            ->group_by('graduation_year')
+            ->order_by('graduation_year', 'DESC')
+            ->get()
+            ->result();
+
+        $industry_sectors = $this->db
+            ->select('industry_sector')
+            ->from('alumni_profiles')
+            ->where('industry_sector IS NOT NULL')
+            ->where('industry_sector !=', '')
+            ->group_by('industry_sector')
+            ->order_by('industry_sector', 'ASC')
+            ->get()
+            ->result();
+
+        return [
+            'programmes' => $programmes,
+            'graduation_years' => $graduation_years,
+            'industry_sectors' => $industry_sectors
+        ];
+    }
+
+    public function get_filtered_alumni($filters = [])
+    {
+        $this->db
+            ->select('
+            alumni_profiles.*,
+            users.first_name,
+            users.last_name,
+            users.university_email,
+            GROUP_CONCAT(DISTINCT profile_degrees.degree_name SEPARATOR ", ") AS programmes
+        ')
+            ->from('alumni_profiles')
+            ->join('users', 'users.id = alumni_profiles.user_id')
+            ->join('profile_degrees', 'profile_degrees.profile_id = alumni_profiles.id', 'left')
+            ->where('users.role', 'alumnus');
+
+        if (!empty($filters['programme'])) {
+            $this->db->where('profile_degrees.degree_name', $filters['programme']);
+        }
+
+        if (!empty($filters['graduation_year'])) {
+            $this->db->where('alumni_profiles.graduation_year', $filters['graduation_year']);
+        }
+
+        if (!empty($filters['industry_sector'])) {
+            $this->db->where('alumni_profiles.industry_sector', $filters['industry_sector']);
+        }
+
+        $this->db
+            ->group_by('alumni_profiles.id')
+            ->order_by('alumni_profiles.updated_at', 'DESC');
+
+        return $this->db->get()->result();
     }
 }

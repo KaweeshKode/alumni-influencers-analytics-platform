@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 class Analytics extends CI_Controller
 {
@@ -42,5 +42,20 @@ class Analytics extends CI_Controller
     public function index()
     {
         redirect('analytics/dashboard');
+    }
+
+    public function alumni()
+    {
+        $filters = [
+            'programme' => $this->input->get('programme', TRUE),
+            'graduation_year' => $this->input->get('graduation_year', TRUE),
+            'industry_sector' => $this->input->get('industry_sector', TRUE)
+        ];
+
+        $data['filters'] = $filters;
+        $data['filter_options'] = $this->Analytics_model->get_alumni_filters();
+        $data['alumni'] = $this->Analytics_model->get_filtered_alumni($filters);
+
+        $this->load->view('analytics/alumni_list', $data);
     }
 }
