@@ -6,10 +6,29 @@
     h2 { color: #2c3e50; }
     a { color: #007bff; }
     ul { line-height: 1.8; }
+
+    .profile-nav {
+        background: #f8f9fa;
+        border: 1px solid #ddd;
+        padding: 10px;
+        border-radius: 6px;
+        margin-bottom: 18px;
+    }
+    .profile-nav a {
+        margin-right: 8px;
+        text-decoration: none;
+    }
 </style>
 <title>Edit Main Profile</title>
 </head>
 <body>
+    <p class="profile-nav">
+        <a href="<?php echo site_url('dashboard'); ?>">Main Dashboard</a> |
+        <a href="<?php echo site_url('profile'); ?>">My Profile</a> |
+        <a href="<?php echo site_url('bidding'); ?>">Bidding</a> |
+        <a href="<?php echo site_url('logout'); ?>">Logout</a>
+    </p>
+
     <h2>Edit Main Profile</h2>
 
     <?php if (!empty($error)) : ?>

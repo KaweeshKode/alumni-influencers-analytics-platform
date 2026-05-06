@@ -4,6 +4,14 @@
     <title><?php echo !empty($user_bid) ? 'Increase Your Bid' : 'Place Your Bid'; ?></title>
 </head>
 <body>
+
+    <p>
+        <a href="<?php echo site_url('dashboard'); ?>">Main Dashboard</a> |
+        <a href="<?php echo site_url('profile'); ?>">My Profile</a> |
+        <a href="<?php echo site_url('bidding'); ?>">Bidding</a> |
+        <a href="<?php echo site_url('bidding/notifications'); ?>">Notifications</a> |
+        <a href="<?php echo site_url('logout'); ?>">Logout</a>
+    </p>
     <h2><?php echo !empty($user_bid) ? 'Increase Your Bid' : 'Place Your Bid'; ?></h2>
 
     <?php if ($this->session->flashdata('error')) : ?>

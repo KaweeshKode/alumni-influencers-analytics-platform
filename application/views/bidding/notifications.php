@@ -4,6 +4,14 @@
     <title>Bid Notifications</title>
 </head>
 <body>
+
+    <p>
+        <a href="<?php echo site_url('dashboard'); ?>">Main Dashboard</a> |
+        <a href="<?php echo site_url('profile'); ?>">My Profile</a> |
+        <a href="<?php echo site_url('bidding'); ?>">Bidding</a> |
+        <a href="<?php echo site_url('bidding/notifications'); ?>">Notifications</a> |
+        <a href="<?php echo site_url('logout'); ?>">Logout</a>
+    </p>
     <h2>Bid Notifications</h2>
 
     <?php if (!empty($notifications)) : ?>

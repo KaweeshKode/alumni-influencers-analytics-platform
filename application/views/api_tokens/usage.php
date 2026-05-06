@@ -4,6 +4,14 @@
     <title>API Usage Logs</title>
 </head>
 <body>
+    <p>
+        <a href="<?php echo site_url('dashboard'); ?>">Main Dashboard</a> |
+        <a href="<?php echo site_url('apitokens'); ?>">API Tokens</a> |
+        <a href="<?php echo site_url('apitokens/usage'); ?>">Usage Logs</a> |
+        <a href="<?php echo site_url('api-docs'); ?>">Swagger Docs</a> |
+        <a href="<?php echo site_url('logout'); ?>">Logout</a>
+    </p>
+
     <h2>API Usage Logs</h2>
 
     <?php if (!empty($logs)) : ?>
