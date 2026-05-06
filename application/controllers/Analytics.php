@@ -58,4 +58,17 @@ class Analytics extends CI_Controller
 
         $this->load->view('analytics/alumni_list', $data);
     }
+
+    public function graphs()
+    {
+        $data['graduation_years'] = $this->Analytics_model->get_alumni_by_graduation_year();
+        $data['industry_sectors'] = $this->Analytics_model->get_employment_by_industry();
+        $data['top_employers'] = $this->Analytics_model->get_top_employers();
+        $data['job_titles'] = $this->Analytics_model->get_common_job_titles();
+        $data['geographic_distribution'] = $this->Analytics_model->get_geographic_distribution();
+        $data['certification_trends'] = $this->Analytics_model->get_certification_trends();
+        $data['course_trends'] = $this->Analytics_model->get_course_trends();
+
+        $this->load->view('analytics/graphs', $data);
+    }
 }

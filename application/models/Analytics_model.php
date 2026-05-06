@@ -162,4 +162,99 @@ class Analytics_model extends CI_Model
 
         return $this->db->get()->result();
     }
+
+    public function get_alumni_by_graduation_year()
+    {
+        return $this->db
+            ->select('graduation_year AS label, COUNT(*) AS total')
+            ->from('alumni_profiles')
+            ->where('graduation_year IS NOT NULL')
+            ->where('graduation_year !=', '')
+            ->group_by('graduation_year')
+            ->order_by('graduation_year', 'ASC')
+            ->get()
+            ->result();
+    }
+
+    public function get_employment_by_industry()
+    {
+        return $this->db
+            ->select('industry_sector AS label, COUNT(*) AS total')
+            ->from('alumni_profiles')
+            ->where('industry_sector IS NOT NULL')
+            ->where('industry_sector !=', '')
+            ->group_by('industry_sector')
+            ->order_by('total', 'DESC')
+            ->get()
+            ->result();
+    }
+
+    public function get_top_employers($limit = 10)
+    {
+        return $this->db
+            ->select('current_company AS label, COUNT(*) AS total')
+            ->from('alumni_profiles')
+            ->where('current_company IS NOT NULL')
+            ->where('current_company !=', '')
+            ->group_by('current_company')
+            ->order_by('total', 'DESC')
+            ->limit($limit)
+            ->get()
+            ->result();
+    }
+
+    public function get_common_job_titles($limit = 10)
+    {
+        return $this->db
+            ->select('current_job_title AS label, COUNT(*) AS total')
+            ->from('alumni_profiles')
+            ->where('current_job_title IS NOT NULL')
+            ->where('current_job_title !=', '')
+            ->group_by('current_job_title')
+            ->order_by('total', 'DESC')
+            ->limit($limit)
+            ->get()
+            ->result();
+    }
+
+    public function get_geographic_distribution()
+    {
+        return $this->db
+            ->select('location_country AS label, COUNT(*) AS total')
+            ->from('alumni_profiles')
+            ->where('location_country IS NOT NULL')
+            ->where('location_country !=', '')
+            ->group_by('location_country')
+            ->order_by('total', 'DESC')
+            ->get()
+            ->result();
+    }
+
+    public function get_certification_trends($limit = 10)
+    {
+        return $this->db
+            ->select('certification_name AS label, COUNT(*) AS total')
+            ->from('profile_certifications')
+            ->where('certification_name IS NOT NULL')
+            ->where('certification_name !=', '')
+            ->group_by('certification_name')
+            ->order_by('total', 'DESC')
+            ->limit($limit)
+            ->get()
+            ->result();
+    }
+
+    public function get_course_trends($limit = 10)
+    {
+        return $this->db
+            ->select('course_name AS label, COUNT(*) AS total')
+            ->from('profile_short_courses')
+            ->where('course_name IS NOT NULL')
+            ->where('course_name !=', '')
+            ->group_by('course_name')
+            ->order_by('total', 'DESC')
+            ->limit($limit)
+            ->get()
+            ->result();
+    }
 }

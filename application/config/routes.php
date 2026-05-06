@@ -163,3 +163,4 @@ $route['openapi.json'] = 'OpenApi/json';
 $route['analytics'] = 'analytics/dashboard';
 $route['analytics/dashboard'] = 'analytics/dashboard';
 $route['analytics/alumni'] = 'analytics/alumni';
+$route['analytics/graphs'] = 'analytics/graphs';
