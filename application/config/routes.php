@@ -136,13 +136,9 @@ $route['apitokens/usage'] = 'ApiTokens/usage';
 |--------------------------------------------------------------------------
 */
 $route['api/featured-today'] = 'Api/featuredToday';
-
-/*
-| Optional future/CW2 API routes.
-| Keep only if these methods exist in Api.php.
-*/
 $route['api/alumni'] = 'Api/alumni';
 $route['api/analytics-summary'] = 'Api/analyticsSummary';
+$route['api/analytics-charts'] = 'Api/analyticsCharts';
 
 
 /*
@@ -164,3 +160,4 @@ $route['analytics'] = 'analytics/dashboard';
 $route['analytics/dashboard'] = 'analytics/dashboard';
 $route['analytics/alumni'] = 'analytics/alumni';
 $route['analytics/graphs'] = 'analytics/graphs';
+$route['analytics/export-csv'] = 'analytics/export_csv';

@@ -71,4 +71,53 @@ class Analytics extends CI_Controller
 
         $this->load->view('analytics/graphs', $data);
     }
+
+    public function export_csv()
+    {
+        $filters = [
+            'programme' => $this->input->get('programme', TRUE),
+            'graduation_year' => $this->input->get('graduation_year', TRUE),
+            'industry_sector' => $this->input->get('industry_sector', TRUE)
+        ];
+
+        $alumni = $this->Analytics_model->get_filtered_alumni($filters);
+
+        $filename = 'filtered_alumni_export_' . date('Y-m-d_H-i-s') . '.csv';
+
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+
+        $output = fopen('php://output', 'w');
+
+        fputcsv($output, [
+            'Name',
+            'Email',
+            'Programme(s)',
+            'Graduation Year',
+            'Current Job',
+            'Company',
+            'Industry Sector',
+            'City',
+            'Country',
+            'LinkedIn URL'
+        ]);
+
+        foreach ($alumni as $person) {
+            fputcsv($output, [
+                $person->first_name . ' ' . $person->last_name,
+                $person->university_email,
+                $person->programmes ?: 'Not added',
+                $person->graduation_year,
+                $person->current_job_title,
+                $person->current_company,
+                $person->industry_sector,
+                $person->location_city,
+                $person->location_country,
+                $person->linkedin_url
+            ]);
+        }
+
+        fclose($output);
+        exit;
+    }
 }
