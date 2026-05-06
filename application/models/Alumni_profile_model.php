@@ -25,4 +25,53 @@ class Alumni_profile_model extends CI_Model
     {
         return $this->db->where('user_id', $user_id)->update($this->table, $data);
     }
+
+    public function get_full_profile_by_user_id($user_id)
+    {
+        $profile = $this->db
+            ->select('
+                alumni_profiles.*,
+                users.first_name,
+                users.last_name,
+                users.university_email AS email
+            ')
+            ->from('alumni_profiles')
+            ->join('users', 'users.id = alumni_profiles.user_id')
+            ->where('alumni_profiles.user_id', $user_id)
+            ->get()
+            ->row();
+
+        if (!$profile) {
+            return null;
+        }
+
+        $profile_id = $profile->id;
+
+        $profile->degrees = $this->db
+            ->where('profile_id', $profile_id)
+            ->get('profile_degrees')
+            ->result();
+
+        $profile->certifications = $this->db
+            ->where('profile_id', $profile_id)
+            ->get('profile_certifications')
+            ->result();
+
+        $profile->licences = $this->db
+            ->where('profile_id', $profile_id)
+            ->get('profile_licences')
+            ->result();
+
+        $profile->short_courses = $this->db
+            ->where('profile_id', $profile_id)
+            ->get('profile_short_courses')
+            ->result();
+
+        $profile->employment_history = $this->db
+            ->where('profile_id', $profile_id)
+            ->get('profile_employment_history')
+            ->result();
+
+        return $profile;
+    }
 }

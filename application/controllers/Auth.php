@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 class Auth extends CI_Controller
 {
@@ -11,6 +11,9 @@ class Auth extends CI_Controller
         $this->load->model('Email_verification_model');
         $this->load->model('Password_reset_model');
         $this->load->model('Login_audit_model');
+
+        $this->load->library('email');
+        $this->_load_env();
     }
 
     public function register()
@@ -49,7 +52,23 @@ class Auth extends CI_Controller
 
                 $verification_link = site_url('auth/verify_email?token=' . urlencode($raw_token));
 
-                $data['message'] = 'Registration successful. Use this verification link for now: <br><a href="' . $verification_link . '">' . $verification_link . '</a>';
+                $email_message = '
+                    <h2>Email Verification</h2>
+                    <p>Hello ' . html_escape($this->input->post('first_name', TRUE)) . ',</p>
+                    <p>Thank you for registering with the Alumni Influencers Platform.</p>
+                    <p>Please click the link below to verify your email address:</p>
+                    <p><a href="' . $verification_link . '">Verify Email</a></p>
+                    <p>If the link does not work, copy and paste this URL into your browser:</p>
+                    <p>' . $verification_link . '</p>
+                    <p>This verification link will expire automatically.</p>
+                ';
+
+                if ($this->_send_email_message($email, 'Verify your Alumni Influencers account', $email_message)) {
+                    $data['message'] = 'Registration successful. Please check your email to verify your account.';
+                } else {
+                    $data['message'] = 'Registration successful, but email sending failed. For local testing, use this verification link:<br><a href="' . $verification_link . '">' . $verification_link . '</a>';
+                }
+
                 return $this->load->view('auth/auth_message', $data);
             }
         }
@@ -119,10 +138,11 @@ class Auth extends CI_Controller
                 $this->session->sess_regenerate(TRUE);
 
                 $this->session->set_userdata([
-                    'user_id' => $user->id,
+                    'user_id'    => $user->id,
                     'user_email' => $user->university_email,
-                    'user_name' => $user->first_name . ' ' . $user->last_name,
-                    'logged_in' => TRUE
+                    'user_name'  => $user->first_name . ' ' . $user->last_name,
+                    'user_role'  => isset($user->role) ? $user->role : 'alumnus',
+                    'logged_in'  => TRUE
                 ]);
 
                 $this->User_model->update_last_login($user->id);
@@ -139,8 +159,9 @@ class Auth extends CI_Controller
     {
         if (!$this->session->userdata('logged_in')) {
             redirect('auth/login');
+            return;
         }
-        
+
         $this->load->view('auth/dashboard');
     }
 
@@ -165,11 +186,27 @@ class Auth extends CI_Controller
 
                     $reset_link = site_url('auth/reset_password?token=' . urlencode($raw_token));
 
-                    $data['message'] = 'Password reset link generated: <br><a href="' . $reset_link . '">' . $reset_link . '</a>';
+                    $email_message = '
+                        <h2>Password Reset</h2>
+                        <p>Hello ' . html_escape($user->first_name) . ',</p>
+                        <p>You requested a password reset for your Alumni Influencers Platform account.</p>
+                        <p>Please click the link below to reset your password:</p>
+                        <p><a href="' . $reset_link . '">Reset Password</a></p>
+                        <p>If the link does not work, copy and paste this URL into your browser:</p>
+                        <p>' . $reset_link . '</p>
+                        <p>If you did not request this password reset, you can safely ignore this email.</p>
+                    ';
+
+                    if ($this->_send_email_message($email, 'Reset your Alumni Influencers password', $email_message)) {
+                        $data['message'] = 'If the email exists, a password reset link has been sent.';
+                    } else {
+                        $data['message'] = 'Password reset link generated, but email sending failed. For local testing, use this link:<br><a href="' . $reset_link . '">' . $reset_link . '</a>';
+                    }
+
                     return $this->load->view('auth/auth_message', $data);
                 }
 
-                $data['message'] = 'If the email exists, a password reset link has been generated.';
+                $data['message'] = 'If the email exists, a password reset link has been sent.';
                 return $this->load->view('auth/auth_message', $data);
             }
         }
@@ -249,5 +286,67 @@ class Auth extends CI_Controller
             'login_status'    => $status,
             'failure_reason'  => $reason
         ]);
+    }
+
+    private function _load_env()
+    {
+        $env_path = FCPATH . '.env';
+
+        if (!file_exists($env_path)) {
+            return;
+        }
+
+        $lines = file($env_path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+
+        foreach ($lines as $line) {
+            $line = trim($line);
+
+            if ($line === '' || strpos($line, '#') === 0) {
+                continue;
+            }
+
+            if (strpos($line, '=') === false) {
+                continue;
+            }
+
+            list($name, $value) = explode('=', $line, 2);
+
+            $name = trim($name);
+            $value = trim($value);
+            $value = trim($value, "\"'");
+
+            $_ENV[$name] = $value;
+            putenv($name . '=' . $value);
+        }
+    }
+
+    private function _send_email_message($to, $subject, $message)
+    {
+        $config = [
+            'protocol'    => 'smtp',
+            'smtp_host'   => $_ENV['SMTP_HOST'] ?? getenv('SMTP_HOST') ?: 'smtp.gmail.com',
+            'smtp_port'   => (int) ($_ENV['SMTP_PORT'] ?? getenv('SMTP_PORT') ?: 465),
+            'smtp_user'   => $_ENV['SMTP_USER'] ?? getenv('SMTP_USER') ?: '',
+            'smtp_pass'   => $_ENV['SMTP_PASS'] ?? getenv('SMTP_PASS') ?: '',
+            'smtp_crypto' => $_ENV['SMTP_CRYPTO'] ?? getenv('SMTP_CRYPTO') ?: 'ssl',
+            'mailtype'    => 'html',
+            'charset'     => 'utf-8',
+            'wordwrap'    => TRUE,
+            'newline'     => "\r\n",
+            'crlf'        => "\r\n"
+        ];
+
+        $this->email->clear(TRUE);
+        $this->email->initialize($config);
+
+        $from_email = $_ENV['SMTP_FROM_EMAIL'] ?? getenv('SMTP_FROM_EMAIL') ?: $config['smtp_user'];
+        $from_name  = $_ENV['SMTP_FROM_NAME'] ?? getenv('SMTP_FROM_NAME') ?: 'Alumni Influencers Platform';
+
+        $this->email->from($from_email, $from_name);
+        $this->email->to($to);
+        $this->email->subject($subject);
+        $this->email->message($message);
+
+        return $this->email->send();
     }
 }

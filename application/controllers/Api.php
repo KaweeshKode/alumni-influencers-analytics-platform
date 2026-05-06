@@ -34,7 +34,7 @@ class Api extends MY_Controller
             return;
         }
 
-        $profile = $this->Alumni_profile_model->get_by_user_id($featured->user_id);
+        $profile = $this->Alumni_profile_model->get_full_profile_by_user_id($featured->user_id);
 
         if (!$profile) {
             $this->log_api_usage($token, 404);
@@ -54,7 +54,7 @@ class Api extends MY_Controller
             ->set_output(json_encode([
                 'date' => $featured->feature_date,
                 'featured_alumnus' => $profile
-            ]));
+            ], JSON_PRETTY_PRINT));
     }
 
     public function alumni()

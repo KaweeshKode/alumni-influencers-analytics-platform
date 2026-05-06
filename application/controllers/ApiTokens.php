@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 class ApiTokens extends CI_Controller
 {
@@ -9,6 +9,12 @@ class ApiTokens extends CI_Controller
 
         if (!$this->session->userdata('logged_in')) {
             redirect('auth/login');
+            return;
+        }
+
+        if ($this->session->userdata('user_role') !== 'developer') {
+            show_error('Access denied. Only developer users can manage API tokens.', 403);
+            return;
         }
 
         $this->load->model('Api_token_model');
