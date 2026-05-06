@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 class Profile extends CI_Controller
 {
@@ -9,6 +9,11 @@ class Profile extends CI_Controller
 
         if (!$this->session->userdata('logged_in')) {
             redirect('auth/login');
+        }
+
+        if ($this->session->userdata('user_role') !== 'alumnus') {
+            show_error('Access denied. Only alumni users can manage profiles.', 403);
+            return;
         }
 
         $this->load->model('Alumni_profile_model');

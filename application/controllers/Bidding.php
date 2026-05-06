@@ -1,24 +1,8 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 class Bidding extends CI_Controller
 {
-    // public function __construct()
-    // {
-    //     parent::__construct();
-
-    //     if (!$this->session->userdata('logged_in')) {
-    //         redirect('auth/login');
-    //     }
-
-    //     $this->load->model('Featured_slot_model');
-    //     $this->load->model('Bid_model');
-    //     $this->load->model('Featured_alumni_model');
-    //     $this->load->model('Bid_notification_model');
-    //     $this->load->library('form_validation');
-    //     $this->load->helper(array('url', 'form'));
-    // }
-
     public function __construct()
     {
         parent::__construct();
@@ -27,14 +11,23 @@ class Bidding extends CI_Controller
         $this->load->model('Bid_model');
         $this->load->model('Featured_alumni_model');
         $this->load->model('Bid_notification_model');
-        $this->load->library('form_validation');
-        $this->load->helper(array('url', 'form'));
 
-        // Allow CLI access for cron/terminal commands
-        if (!$this->input->is_cli_request()) {
-            if (!$this->session->userdata('logged_in')) {
-                redirect('auth/login');
-            }
+        $this->load->helper(['url', 'form']);
+        $this->load->library('form_validation');
+        
+        // Allow CLI access for terminal commands
+        if ($this->input->is_cli_request()) {
+            return;
+        }
+
+        if (!$this->session->userdata('logged_in')) {
+            redirect('auth/login');
+            return;
+        }
+
+        if ($this->session->userdata('user_role') !== 'alumnus') {
+            show_error('Access denied. Only alumni users can access bidding.', 403);
+            return;
         }
     }
 
