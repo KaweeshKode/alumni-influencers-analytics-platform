@@ -32,8 +32,7 @@
     <h2>My Degrees</h2>
 
     <p>
-        <a href="<?php echo site_url('profile/add_degree'); ?>">Add Degree</a> |
-        <a href="<?php echo site_url('profile'); ?>">Back</a>
+        <a href="<?php echo site_url('profile/add_degree'); ?>">Add Degree</a>
     </p>
 
     <?php if (!empty($degrees)) : ?>

@@ -42,10 +42,5 @@
             <p><a href="<?php echo site_url('bidding/place_bid'); ?>">Place a Bid</a></p>
         <?php endif; ?>
     <?php endif; ?>
-
-    <p>
-        <a href="<?php echo site_url('bidding/notifications'); ?>">View Notifications</a> |
-        <a href="<?php echo site_url('profile'); ?>">Back to Profile</a>
-    </p>
 </body>
 </html>

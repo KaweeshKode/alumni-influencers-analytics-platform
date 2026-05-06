@@ -32,8 +32,7 @@
     <h2>Employment History</h2>
 
     <p>
-        <a href="<?php echo site_url('profile/add_employment'); ?>">Add Employment</a> |
-        <a href="<?php echo site_url('profile'); ?>">Back</a>
+        <a href="<?php echo site_url('profile/add_employment'); ?>">Add Employment</a>
     </p>
 
     <?php if (!empty($employment_history)) : ?>

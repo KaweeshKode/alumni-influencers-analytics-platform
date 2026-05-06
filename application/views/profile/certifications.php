@@ -32,8 +32,7 @@
     <h2>My Certifications</h2>
 
     <p>
-        <a href="<?php echo site_url('profile/add_certification'); ?>">Add Certification</a> |
-        <a href="<?php echo site_url('profile'); ?>">Back</a>
+        <a href="<?php echo site_url('profile/add_certification'); ?>">Add Certification</a>
     </p>
 
     <?php if (!empty($certifications)) : ?>

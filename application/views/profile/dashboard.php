@@ -34,8 +34,7 @@
     <p>Welcome, <?php echo html_escape($this->session->userdata('user_name')); ?>!</p>
 
     <p>
-        <a href="<?php echo site_url('profile/edit_main'); ?>">Edit Main Profile</a> |
-        <a href="<?php echo site_url('auth/logout'); ?>">Logout</a>
+        <a href="<?php echo site_url('profile/edit_main'); ?>">Edit Main Profile</a>
     </p>
 
     <?php if (!empty($profile)) : ?>

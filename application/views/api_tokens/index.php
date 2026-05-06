@@ -97,9 +97,5 @@
     <?php else : ?>
         <p>No API tokens created yet.</p>
     <?php endif; ?>
-
-    <p>
-        <a href="<?php echo site_url('apitokens/usage'); ?>">View Usage Logs</a>
-    </p>
 </body>
 </html>

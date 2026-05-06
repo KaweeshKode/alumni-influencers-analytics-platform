@@ -32,8 +32,7 @@
     <h2>My Short Courses</h2>
 
     <p>
-        <a href="<?php echo site_url('profile/add_short_course'); ?>">Add Short Course</a> |
-        <a href="<?php echo site_url('profile'); ?>">Back</a>
+        <a href="<?php echo site_url('profile/add_short_course'); ?>">Add Short Course</a>
     </p>
 
     <?php if (!empty($short_courses)) : ?>

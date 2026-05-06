@@ -32,8 +32,7 @@
     <h2>My Licences</h2>
 
     <p>
-        <a href="<?php echo site_url('profile/add_licence'); ?>">Add Licence</a> |
-        <a href="<?php echo site_url('profile'); ?>">Back</a>
+        <a href="<?php echo site_url('profile/add_licence'); ?>">Add Licence</a>
     </p>
 
     <?php if (!empty($licences)) : ?>
