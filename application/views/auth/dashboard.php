@@ -3,84 +3,7 @@
 
 <head>
     <title>Main Dashboard</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 30px;
-            background: #f5f6fa;
-        }
-
-        .container {
-            max-width: 1100px;
-            margin: auto;
-        }
-
-        .header {
-            background: #fff;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-
-        .header h1 {
-            margin: 0 0 8px 0;
-        }
-
-        .role-badge {
-            display: inline-block;
-            background: #eee;
-            padding: 6px 10px;
-            border-radius: 20px;
-            font-size: 14px;
-        }
-
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 18px;
-        }
-
-        .card {
-            background: #fff;
-            padding: 18px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-        }
-
-        .card h3 {
-            margin-top: 0;
-        }
-
-        .card p {
-            color: #555;
-            min-height: 45px;
-        }
-
-        .card a {
-            display: inline-block;
-            margin-top: 8px;
-            padding: 8px 12px;
-            background: #222;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-
-        .top-links {
-            margin-top: 15px;
-        }
-
-        .top-links a {
-            margin-right: 15px;
-        }
-
-        @media (max-width: 800px) {
-            .cards {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="<?php echo base_url('assets/css/app.css'); ?>">
 </head>
 
 <body>
@@ -92,16 +15,17 @@
         $role = $this->session->userdata('user_role');
         ?>
 
-        <div class="header">
+        <div class="page-header">
             <h1>Welcome, <?php echo html_escape($user_name); ?></h1>
+            <p>Use the dashboard below to access the features available for your account role.</p>
             <span class="role-badge">
                 Role: <?php echo ucfirst(html_escape($role)); ?>
             </span>
+        </div>
 
-            <div class="top-links">
-                <a href="<?php echo site_url('dashboard'); ?>">Main Dashboard</a>
-                <a href="<?php echo site_url('logout'); ?>">Logout</a>
-            </div>
+        <div class="navbar">
+            <a href="<?php echo site_url('dashboard'); ?>">Main Dashboard</a>
+            <a href="<?php echo site_url('logout'); ?>">Logout</a>
         </div>
 
         <div class="cards">

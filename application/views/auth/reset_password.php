@@ -2,16 +2,32 @@
 <html>
 <head>
     <title>Reset Password</title>
+    <link rel="stylesheet" href="<?php echo base_url('assets/css/app.css'); ?>">
 </head>
 <body>
-    <h2>Reset Password</h2>
+<div class="container">
 
-    <?php echo validation_errors('<p style="color:red;">', '</p>'); ?>
+    <div class="page-header">
+        <h1>Reset Password</h1>
+        <p>Enter and confirm your new account password.</p>
+    </div>
 
-    <?php echo form_open(current_url() . '?token=' . urlencode($token)); ?>
-        <p>New Password: <input type="password" name="password"></p>
-        <p>Confirm Password: <input type="password" name="confirm_password"></p>
-        <p><button type="submit">Reset Password</button></p>
-    <?php echo form_close(); ?>
+    <div class="section">
+        <?php echo validation_errors('<div class="alert alert-error">', '</div>'); ?>
+
+        <?php echo form_open(current_url() . '?token=' . urlencode($token)); ?>
+            <p>
+                <label>New Password:</label><br>
+                <input type="password" name="password">
+            </p>
+            <p>
+                <label>Confirm Password:</label><br>
+                <input type="password" name="confirm_password">
+            </p>
+            <p><button type="submit">Reset Password</button></p>
+        <?php echo form_close(); ?>
+    </div>
+
+</div>
 </body>
 </html>

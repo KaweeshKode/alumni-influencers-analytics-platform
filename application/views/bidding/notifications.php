@@ -1,18 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="<?php echo base_url('assets/css/app.css'); ?>">
     <title>Bid Notifications</title>
 </head>
 <body>
-
-    <p>
-        <a href="<?php echo site_url('dashboard'); ?>">Main Dashboard</a> |
-        <a href="<?php echo site_url('profile'); ?>">My Profile</a> |
-        <a href="<?php echo site_url('bidding'); ?>">Bidding</a> |
-        <a href="<?php echo site_url('bidding/notifications'); ?>">Notifications</a> |
+<div class="container">
+    <div class="navbar">
+        <a href="<?php echo site_url('dashboard'); ?>">Main Dashboard</a>
+        <a href="<?php echo site_url('profile'); ?>">My Profile</a>
+        <a href="<?php echo site_url('bidding'); ?>">Bidding</a>
+        <a href="<?php echo site_url('bidding/notifications'); ?>">Notifications</a>
         <a href="<?php echo site_url('logout'); ?>">Logout</a>
-    </p>
-    <h2>Bid Notifications</h2>
+    </div>
+
+    <div class="page-header">
+
+
+        <h1>Bid Notifications</h1>
+
+
+    </div>
 
     <?php if (!empty($notifications)) : ?>
         <ul>
@@ -29,5 +37,6 @@
     <?php endif; ?>
 
     <p><a href="<?php echo site_url('bidding'); ?>">Back to Bidding Dashboard</a></p>
+</div>
 </body>
 </html>

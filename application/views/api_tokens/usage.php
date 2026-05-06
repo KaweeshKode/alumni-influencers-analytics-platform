@@ -2,49 +2,59 @@
 <html>
 <head>
     <title>API Usage Logs</title>
+    <link rel="stylesheet" href="<?php echo base_url('assets/css/app.css'); ?>">
 </head>
 <body>
-    <p>
-        <a href="<?php echo site_url('dashboard'); ?>">Main Dashboard</a> |
-        <a href="<?php echo site_url('apitokens'); ?>">API Tokens</a> |
-        <a href="<?php echo site_url('apitokens/usage'); ?>">Usage Logs</a> |
-        <a href="<?php echo site_url('api-docs'); ?>">Swagger Docs</a> |
+<div class="container">
+
+    <div class="navbar">
+        <a href="<?php echo site_url('dashboard'); ?>">Main Dashboard</a>
+        <a href="<?php echo site_url('apitokens'); ?>">API Tokens</a>
+        <a href="<?php echo site_url('apitokens/usage'); ?>">Usage Logs</a>
+        <a href="<?php echo site_url('api-docs'); ?>">Swagger Docs</a>
         <a href="<?php echo site_url('logout'); ?>">Logout</a>
-    </p>
+    </div>
 
-    <h2>API Usage Logs</h2>
+    <div class="page-header">
+        <h1>API Usage Logs</h1>
+        <p>Review token usage, accessed endpoints, timestamps, and response codes.</p>
+    </div>
 
-    <?php if (!empty($logs)) : ?>
-        <table border="1" cellpadding="8" cellspacing="0">
-            <thead>
-                <tr>
-                    <th>Time</th>
-                    <th>Client</th>
-                    <th>Token Name</th>
-                    <th>Method</th>
-                    <th>Endpoint</th>
-                    <th>Response</th>
-                    <th>IP</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($logs as $log) : ?>
+    <div class="section">
+        <?php if (!empty($logs)) : ?>
+            <table>
+                <thead>
                     <tr>
-                        <td><?php echo html_escape($log->requested_at); ?></td>
-                        <td><?php echo html_escape($log->client_name); ?></td>
-                        <td><?php echo html_escape($log->token_name); ?></td>
-                        <td><?php echo html_escape($log->http_method); ?></td>
-                        <td><?php echo html_escape($log->endpoint); ?></td>
-                        <td><?php echo (int)$log->response_code; ?></td>
-                        <td><?php echo html_escape($log->ip_address); ?></td>
+                        <th>Time</th>
+                        <th>Client</th>
+                        <th>Token Name</th>
+                        <th>Method</th>
+                        <th>Endpoint</th>
+                        <th>Response</th>
+                        <th>IP</th>
                     </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    <?php else : ?>
-        <p>No API usage logs found yet.</p>
-    <?php endif; ?>
+                </thead>
+                <tbody>
+                    <?php foreach ($logs as $log) : ?>
+                        <tr>
+                            <td><?php echo html_escape($log->requested_at); ?></td>
+                            <td><?php echo html_escape($log->client_name); ?></td>
+                            <td><?php echo html_escape($log->token_name); ?></td>
+                            <td><?php echo html_escape($log->http_method); ?></td>
+                            <td><?php echo html_escape($log->endpoint); ?></td>
+                            <td><?php echo (int)$log->response_code; ?></td>
+                            <td><?php echo html_escape($log->ip_address); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php else : ?>
+            <p>No API usage logs found yet.</p>
+        <?php endif; ?>
+    </div>
 
-    <p><a href="<?php echo site_url('apitokens'); ?>">Back to API Tokens</a></p>
+    <p><a class="btn" href="<?php echo site_url('apitokens'); ?>">Back to API Tokens</a></p>
+
+</div>
 </body>
 </html>

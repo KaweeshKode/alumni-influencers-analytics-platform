@@ -1,35 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-<style>
-    body { font-family: Arial; margin: 20px; }
-    h2 { color: #2c3e50; }
-    a { color: #007bff; }
-    ul { line-height: 1.8; }
-
-    .profile-nav {
-        background: #f8f9fa;
-        border: 1px solid #ddd;
-        padding: 10px;
-        border-radius: 6px;
-        margin-bottom: 18px;
-    }
-    .profile-nav a {
-        margin-right: 8px;
-        text-decoration: none;
-    }
-</style>
+    <link rel="stylesheet" href="<?php echo base_url('assets/css/app.css'); ?>">
 <title>Edit Main Profile</title>
 </head>
 <body>
-    <p class="profile-nav">
-        <a href="<?php echo site_url('dashboard'); ?>">Main Dashboard</a> |
-        <a href="<?php echo site_url('profile'); ?>">My Profile</a> |
-        <a href="<?php echo site_url('bidding'); ?>">Bidding</a> |
+<div class="container">
+    <div class="navbar">
+        <a href="<?php echo site_url('dashboard'); ?>">Main Dashboard</a>
+        <a href="<?php echo site_url('profile'); ?>">My Profile</a>
+        <a href="<?php echo site_url('bidding'); ?>">Bidding</a>
         <a href="<?php echo site_url('logout'); ?>">Logout</a>
-    </p>
+    </div>
 
-    <h2>Edit Main Profile</h2>
+    <div class="page-header">
+
+
+        <h1>Edit Main Profile</h1>
+
+
+    </div>
 
     <?php if (!empty($error)) : ?>
         <p style="color:red;"><?php echo $error; ?></p>
@@ -94,5 +84,6 @@
     <?php echo form_close(); ?>
 
     <p><a href="<?php echo site_url('profile'); ?>">Back to Profile Dashboard</a></p>
+</div>
 </body>
 </html>

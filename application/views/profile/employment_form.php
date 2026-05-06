@@ -1,35 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-<style>
-    body { font-family: Arial; margin: 20px; }
-    h2 { color: #2c3e50; }
-    a { color: #007bff; }
-    ul { line-height: 1.8; }
-
-    .profile-nav {
-        background: #f8f9fa;
-        border: 1px solid #ddd;
-        padding: 10px;
-        border-radius: 6px;
-        margin-bottom: 18px;
-    }
-    .profile-nav a {
-        margin-right: 8px;
-        text-decoration: none;
-    }
-</style>
+    <link rel="stylesheet" href="<?php echo base_url('assets/css/app.css'); ?>">
 <title><?php echo isset($employment) ? 'Edit Employment' : 'Add Employment'; ?></title>
 </head>
 <body>
-    <p class="profile-nav">
-        <a href="<?php echo site_url('dashboard'); ?>">Main Dashboard</a> |
-        <a href="<?php echo site_url('profile'); ?>">My Profile</a> |
-        <a href="<?php echo site_url('bidding'); ?>">Bidding</a> |
+<div class="container">
+    <div class="navbar">
+        <a href="<?php echo site_url('dashboard'); ?>">Main Dashboard</a>
+        <a href="<?php echo site_url('profile'); ?>">My Profile</a>
+        <a href="<?php echo site_url('bidding'); ?>">Bidding</a>
         <a href="<?php echo site_url('logout'); ?>">Logout</a>
-    </p>
+    </div>
 
-    <h2><?php echo isset($employment) ? 'Edit Employment' : 'Add Employment'; ?></h2>
+    <div class="page-header">
+
+
+        <h1><?php echo isset($employment) ? 'Edit Employment' : 'Add Employment'; ?></h1>
+
+
+    </div>
 
     <?php echo validation_errors('<p style="color:red;">', '</p>'); ?>
 
@@ -74,5 +64,6 @@
     <?php echo form_close(); ?>
 
     <p><a href="<?php echo site_url('profile/employment'); ?>">Back to Employment History</a></p>
+</div>
 </body>
 </html>

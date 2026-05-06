@@ -1,18 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="<?php echo base_url('assets/css/app.css'); ?>">
     <title><?php echo !empty($user_bid) ? 'Increase Your Bid' : 'Place Your Bid'; ?></title>
 </head>
 <body>
-
-    <p>
-        <a href="<?php echo site_url('dashboard'); ?>">Main Dashboard</a> |
-        <a href="<?php echo site_url('profile'); ?>">My Profile</a> |
-        <a href="<?php echo site_url('bidding'); ?>">Bidding</a> |
-        <a href="<?php echo site_url('bidding/notifications'); ?>">Notifications</a> |
+<div class="container">
+    <div class="navbar">
+        <a href="<?php echo site_url('dashboard'); ?>">Main Dashboard</a>
+        <a href="<?php echo site_url('profile'); ?>">My Profile</a>
+        <a href="<?php echo site_url('bidding'); ?>">Bidding</a>
+        <a href="<?php echo site_url('bidding/notifications'); ?>">Notifications</a>
         <a href="<?php echo site_url('logout'); ?>">Logout</a>
-    </p>
-    <h2><?php echo !empty($user_bid) ? 'Increase Your Bid' : 'Place Your Bid'; ?></h2>
+    </div>
+
+    <div class="page-header">
+
+
+        <h1><?php echo !empty($user_bid) ? 'Increase Your Bid' : 'Place Your Bid'; ?></h1>
+
+
+    </div>
 
     <?php if ($this->session->flashdata('error')) : ?>
         <p style="color:red;"><?php echo html_escape($this->session->flashdata('error')); ?></p>
@@ -54,5 +62,6 @@
     <?php echo form_close(); ?>
 
     <p><a href="<?php echo site_url('bidding'); ?>">Back to Bidding Dashboard</a></p>
+</div>
 </body>
 </html>
