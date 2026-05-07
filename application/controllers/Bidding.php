@@ -14,6 +14,9 @@ class Bidding extends CI_Controller
 
         $this->load->helper(['url', 'form']);
         $this->load->library('form_validation');
+
+        $this->load->library('email');
+        $this->_load_env();
         
         // Allow CLI access for terminal commands
         if ($this->input->is_cli_request()) {
@@ -222,6 +225,133 @@ class Bidding extends CI_Controller
             return;
         }
 
+        // Send winner/loser result emails after the database transaction succeeds.
+        // Email failure should not roll back or block the awarded result.
+        $email_success_count = 0;
+        $email_fail_count = 0;
+
+        foreach ($all_bids as $bid) {
+            $is_winner = ((int)$bid->id === (int)$eligible_winning_bid->id);
+
+            if ($this->_send_bid_result_email($bid, $slot, $is_winner)) {
+                $email_success_count++;
+            } else {
+                $email_fail_count++;
+            }
+        }
+
         echo "Today's slot awarded successfully." . PHP_EOL;
+        echo "Bid result emails sent: " . $email_success_count . PHP_EOL;
+
+        if ($email_fail_count > 0) {
+            echo "Bid result emails failed: " . $email_fail_count . PHP_EOL;
+        }
+    }
+
+    private function _send_bid_result_email($bid, $slot, $is_winner)
+    {
+        $user = $this->_get_bidder_details($bid->user_id);
+
+        if (!$user || empty($user->university_email)) {
+            return false;
+        }
+
+        $full_name = trim($user->first_name . ' ' . $user->last_name);
+        $first_name = !empty($user->first_name) ? $user->first_name : $full_name;
+
+        if ($is_winner) {
+            $subject = 'You won the Alumni Influencer featured slot';
+            $message = '
+                <h2>Congratulations!</h2>
+                <p>Hello ' . html_escape($first_name) . ',</p>
+                <p>You have won the Alumni Influencer of the Day featured slot for ' . html_escape($slot->slot_date) . '.</p>
+                <p>Your profile has been selected to be displayed as the featured alumnus.</p>
+                <p><strong>Your bid amount:</strong> ' . html_escape(number_format((float)$bid->bid_amount, 2)) . '</p>
+                <p>Thank you for using the Alumni Influencers Platform.</p>
+            ';
+        } else {
+            $subject = 'Alumni Influencer featured slot result';
+            $message = '
+                <h2>Featured Slot Result</h2>
+                <p>Hello ' . html_escape($first_name) . ',</p>
+                <p>Your bid was not selected for the Alumni Influencer of the Day featured slot on ' . html_escape($slot->slot_date) . '.</p>
+                <p>You can try again for another available featured slot.</p>
+                <p>Thank you for using the Alumni Influencers Platform.</p>
+            ';
+        }
+
+        return $this->_send_email_message($user->university_email, $subject, $message);
+    }
+
+    private function _get_bidder_details($user_id)
+    {
+        return $this->db
+            ->select('id, first_name, last_name, university_email')
+            ->from('users')
+            ->where('id', $user_id)
+            ->get()
+            ->row();
+    }
+
+    private function _load_env()
+    {
+        $env_path = FCPATH . '.env';
+
+        if (!file_exists($env_path)) {
+            return;
+        }
+
+        $lines = file($env_path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+
+        foreach ($lines as $line) {
+            $line = trim($line);
+
+            if ($line === '' || strpos($line, '#') === 0) {
+                continue;
+            }
+
+            if (strpos($line, '=') === false) {
+                continue;
+            }
+
+            list($name, $value) = explode('=', $line, 2);
+
+            $name = trim($name);
+            $value = trim($value);
+            $value = trim($value, "\"'");
+
+            $_ENV[$name] = $value;
+            putenv($name . '=' . $value);
+        }
+    }
+
+    private function _send_email_message($to, $subject, $message)
+    {
+        $config = [
+            'protocol'    => 'smtp',
+            'smtp_host'   => $_ENV['SMTP_HOST'] ?? getenv('SMTP_HOST') ?: 'smtp.gmail.com',
+            'smtp_port'   => (int) ($_ENV['SMTP_PORT'] ?? getenv('SMTP_PORT') ?: 465),
+            'smtp_user'   => $_ENV['SMTP_USER'] ?? getenv('SMTP_USER') ?: '',
+            'smtp_pass'   => $_ENV['SMTP_PASS'] ?? getenv('SMTP_PASS') ?: '',
+            'smtp_crypto' => $_ENV['SMTP_CRYPTO'] ?? getenv('SMTP_CRYPTO') ?: 'ssl',
+            'mailtype'    => 'html',
+            'charset'     => 'utf-8',
+            'wordwrap'    => TRUE,
+            'newline'     => "\r\n",
+            'crlf'        => "\r\n"
+        ];
+
+        $this->email->clear(TRUE);
+        $this->email->initialize($config);
+
+        $from_email = $_ENV['SMTP_FROM_EMAIL'] ?? getenv('SMTP_FROM_EMAIL') ?: $config['smtp_user'];
+        $from_name  = $_ENV['SMTP_FROM_NAME'] ?? getenv('SMTP_FROM_NAME') ?: 'Alumni Influencers Platform';
+
+        $this->email->from($from_email, $from_name);
+        $this->email->to($to);
+        $this->email->subject($subject);
+        $this->email->message($message);
+
+        return $this->email->send();
     }
 }
