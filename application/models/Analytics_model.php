@@ -257,4 +257,79 @@ class Analytics_model extends CI_Model
             ->get()
             ->result();
     }
+
+
+    public function get_alumni_growth_trend()
+    {
+        $rows = $this->get_alumni_by_graduation_year();
+        $running_total = 0;
+        $growth = [];
+
+        foreach ($rows as $row) {
+            $running_total += (int) $row->total;
+            $growth[] = (object) [
+                'label' => (string) $row->label,
+                'total' => $running_total
+            ];
+        }
+
+        return $growth;
+    }
+
+    private function count_skill_keywords($table, $column, $keywords)
+    {
+        $this->db->from($table);
+        $this->db->group_start();
+
+        foreach ($keywords as $index => $keyword) {
+            if ($index === 0) {
+                $this->db->like($column, $keyword);
+            } else {
+                $this->db->or_like($column, $keyword);
+            }
+        }
+
+        $this->db->group_end();
+        return (int) $this->db->count_all_results();
+    }
+
+    public function get_curriculum_skills_gap()
+    {
+        $skill_areas = [
+            'Cloud Computing' => ['AWS', 'Azure', 'Cloud'],
+            'Data Analytics / AI' => ['Data', 'Analytics', 'AI', 'Machine Learning'],
+            'Web Development' => ['React', 'Laravel', 'PHP', 'JavaScript', 'Web'],
+            'DevOps / Containers' => ['Docker', 'Kubernetes', 'DevOps', 'CI/CD'],
+            'Cybersecurity' => ['Security', 'Cyber', 'Network Security', 'Ethical Hacking']
+        ];
+
+        $results = [];
+
+        foreach ($skill_areas as $skill => $keywords) {
+            $certification_count = $this->count_skill_keywords('profile_certifications', 'certification_name', $keywords);
+            $course_count = $this->count_skill_keywords('profile_short_courses', 'course_name', $keywords);
+            $total = $certification_count + $course_count;
+
+            if ($total >= 3) {
+                $gap_level = 'Critical';
+            } elseif ($total === 2) {
+                $gap_level = 'Significant';
+            } elseif ($total === 1) {
+                $gap_level = 'Emerging';
+            } else {
+                $gap_level = 'No current signal';
+            }
+
+            $results[] = (object) [
+                'label' => $skill,
+                'total' => $total,
+                'certification_count' => $certification_count,
+                'course_count' => $course_count,
+                'gap_level' => $gap_level
+            ];
+        }
+
+        return $results;
+    }
+
 }

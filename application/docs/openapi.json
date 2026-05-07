@@ -259,6 +259,18 @@
             "items": {
               "$ref": "#/components/schemas/ChartDataPoint"
             }
+          },
+          "alumni_growth_trend": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChartDataPoint"
+            }
+          },
+          "curriculum_skills_gap": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SkillsGapPoint"
+            }
           }
         }
       },
@@ -281,6 +293,31 @@
           "error": {
             "type": "string",
             "example": "Missing bearer token."
+          }
+        }
+      },
+      "SkillsGapPoint": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "example": "Cloud Computing"
+          },
+          "total": {
+            "type": "integer",
+            "example": 3
+          },
+          "certification_count": {
+            "type": "integer",
+            "example": 2
+          },
+          "course_count": {
+            "type": "integer",
+            "example": 1
+          },
+          "gap_level": {
+            "type": "string",
+            "example": "Critical"
           }
         }
       }
@@ -467,7 +504,7 @@
     "/api/analytics-charts": {
       "get": {
         "summary": "Get analytics chart data",
-        "description": "Returns chart-ready alumni analytics data for the University Analytics Dashboard. Requires the read:analytics scope.",
+        "description": "Returns chart-ready alumni analytics data for the University Analytics Dashboard, including bar, line, pie, doughnut, and radar chart datasets. Requires the read:analytics scope.",
         "tags": [
           "Analytics API"
         ],

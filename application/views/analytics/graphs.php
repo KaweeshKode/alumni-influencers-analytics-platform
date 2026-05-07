@@ -23,6 +23,34 @@
             max-height: 280px;
         }
 
+        .gap-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .gap-critical {
+            background: #fde2e2;
+            color: #9b1c1c;
+        }
+
+        .gap-significant {
+            background: #fff4d6;
+            color: #8a5a00;
+        }
+
+        .gap-emerging {
+            background: #e6f2ff;
+            color: #064f8f;
+        }
+
+        .gap-none {
+            background: #eeeeee;
+            color: #555555;
+        }
+
         @media (max-width: 900px) {
             .chart-grid {
                 grid-template-columns: 1fr;
@@ -47,13 +75,18 @@
     </div>
 
     <div class="section">
-        These charts are generated from alumni profile, employment, certification, and course data stored in the database.
+        These charts are generated from alumni profile, employment, certification, and course data stored in the database. The skills gap insight uses certification and short-course keywords to highlight emerging, significant, and critical curriculum signals.
     </div>
 
     <div class="chart-grid">
         <div class="chart-card">
             <h3>Alumni by Graduation Year</h3>
             <canvas id="graduationYearChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+            <h3>Alumni Growth Trend</h3>
+            <canvas id="alumniGrowthLineChart"></canvas>
         </div>
 
         <div class="chart-card">
@@ -85,6 +118,57 @@
             <h3>Professional Course Trends</h3>
             <canvas id="courseChart"></canvas>
         </div>
+
+        <div class="chart-card">
+            <h3>Curriculum Skills Gap Radar</h3>
+            <canvas id="skillsGapRadarChart"></canvas>
+        </div>
+    </div>
+
+    <div class="section" style="margin-top: 20px;">
+        <h2>Curriculum Skills Gap Insights</h2>
+        <p>The table below groups certification and short-course signals into skill areas. Higher counts indicate stronger industry demand and can guide curriculum review.</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Skill Area</th>
+                    <th>Certification Signals</th>
+                    <th>Course Signals</th>
+                    <th>Total Signals</th>
+                    <th>Gap Level</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (!empty($skills_gap)): ?>
+                    <?php foreach ($skills_gap as $gap): ?>
+                        <?php
+                            $level = strtolower(str_replace(' ', '-', $gap->gap_level));
+                            $class = 'gap-none';
+
+                            if ($level === 'critical') {
+                                $class = 'gap-critical';
+                            } elseif ($level === 'significant') {
+                                $class = 'gap-significant';
+                            } elseif ($level === 'emerging') {
+                                $class = 'gap-emerging';
+                            }
+                        ?>
+                        <tr>
+                            <td><?php echo html_escape($gap->label); ?></td>
+                            <td><?php echo (int) $gap->certification_count; ?></td>
+                            <td><?php echo (int) $gap->course_count; ?></td>
+                            <td><?php echo (int) $gap->total; ?></td>
+                            <td><span class="gap-badge <?php echo $class; ?>"><?php echo html_escape($gap->gap_level); ?></span></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="5">No skills gap data available.</td>
+                    </tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
     </div>
 </div>
 
@@ -104,6 +188,8 @@ const jobTitles = <?php echo json_encode($job_titles); ?>;
 const geographicDistribution = <?php echo json_encode($geographic_distribution); ?>;
 const certificationTrends = <?php echo json_encode($certification_trends); ?>;
 const courseTrends = <?php echo json_encode($course_trends); ?>;
+const alumniGrowthTrend = <?php echo json_encode($alumni_growth_trend); ?>;
+const skillsGap = <?php echo json_encode($skills_gap); ?>;
 
 new Chart(document.getElementById('graduationYearChart'), {
     type: 'bar',
@@ -117,7 +203,36 @@ new Chart(document.getElementById('graduationYearChart'), {
     options: {
         responsive: true,
         plugins: {
-            legend: { display: true }
+            legend: { display: true },
+            tooltip: { enabled: true }
+        },
+        scales: {
+            y: { beginAtZero: true, title: { display: true, text: 'Number of Alumni' } },
+            x: { title: { display: true, text: 'Graduation Year' } }
+        }
+    }
+});
+
+new Chart(document.getElementById('alumniGrowthLineChart'), {
+    type: 'line',
+    data: {
+        labels: labelsFrom(alumniGrowthTrend),
+        datasets: [{
+            label: 'Cumulative Alumni Count',
+            data: totalsFrom(alumniGrowthTrend),
+            tension: 0.35,
+            fill: false
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: true },
+            tooltip: { enabled: true }
+        },
+        scales: {
+            y: { beginAtZero: true, title: { display: true, text: 'Cumulative Alumni' } },
+            x: { title: { display: true, text: 'Graduation Year' } }
         }
     }
 });
@@ -132,7 +247,8 @@ new Chart(document.getElementById('industryChart'), {
         }]
     },
     options: {
-        responsive: true
+        responsive: true,
+        plugins: { legend: { display: true }, tooltip: { enabled: true } }
     }
 });
 
@@ -147,7 +263,12 @@ new Chart(document.getElementById('employerChart'), {
     },
     options: {
         indexAxis: 'y',
-        responsive: true
+        responsive: true,
+        plugins: { legend: { display: true }, tooltip: { enabled: true } },
+        scales: {
+            x: { beginAtZero: true, title: { display: true, text: 'Number of Alumni' } },
+            y: { title: { display: true, text: 'Employer' } }
+        }
     }
 });
 
@@ -162,7 +283,12 @@ new Chart(document.getElementById('jobTitleChart'), {
     },
     options: {
         indexAxis: 'y',
-        responsive: true
+        responsive: true,
+        plugins: { legend: { display: true }, tooltip: { enabled: true } },
+        scales: {
+            x: { beginAtZero: true, title: { display: true, text: 'Number of Alumni' } },
+            y: { title: { display: true, text: 'Job Title' } }
+        }
     }
 });
 
@@ -176,7 +302,8 @@ new Chart(document.getElementById('geoChart'), {
         }]
     },
     options: {
-        responsive: true
+        responsive: true,
+        plugins: { legend: { display: true }, tooltip: { enabled: true } }
     }
 });
 
@@ -190,7 +317,12 @@ new Chart(document.getElementById('certificationChart'), {
         }]
     },
     options: {
-        responsive: true
+        responsive: true,
+        plugins: { legend: { display: true }, tooltip: { enabled: true } },
+        scales: {
+            y: { beginAtZero: true, title: { display: true, text: 'Number of Certifications' } },
+            x: { title: { display: true, text: 'Certification' } }
+        }
     }
 });
 
@@ -204,7 +336,33 @@ new Chart(document.getElementById('courseChart'), {
         }]
     },
     options: {
-        responsive: true
+        responsive: true,
+        plugins: { legend: { display: true }, tooltip: { enabled: true } },
+        scales: {
+            y: { beginAtZero: true, title: { display: true, text: 'Number of Courses' } },
+            x: { title: { display: true, text: 'Course' } }
+        }
+    }
+});
+
+new Chart(document.getElementById('skillsGapRadarChart'), {
+    type: 'radar',
+    data: {
+        labels: labelsFrom(skillsGap),
+        datasets: [{
+            label: 'Skill Demand Signals',
+            data: totalsFrom(skillsGap)
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: true },
+            tooltip: { enabled: true }
+        },
+        scales: {
+            r: { beginAtZero: true, ticks: { precision: 0 } }
+        }
     }
 });
 </script>

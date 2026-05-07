@@ -119,7 +119,9 @@ class Api extends MY_Controller
             'common_job_titles' => $this->Analytics_model->get_common_job_titles(),
             'geographic_distribution' => $this->Analytics_model->get_geographic_distribution(),
             'certification_trends' => $this->Analytics_model->get_certification_trends(),
-            'course_trends' => $this->Analytics_model->get_course_trends()
+            'course_trends' => $this->Analytics_model->get_course_trends(),
+            'alumni_growth_trend' => $this->Analytics_model->get_alumni_growth_trend(),
+            'curriculum_skills_gap' => $this->Analytics_model->get_curriculum_skills_gap()
         ];
 
         $this->log_api_usage($token, 200);

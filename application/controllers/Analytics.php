@@ -68,6 +68,8 @@ class Analytics extends CI_Controller
         $data['geographic_distribution'] = $this->Analytics_model->get_geographic_distribution();
         $data['certification_trends'] = $this->Analytics_model->get_certification_trends();
         $data['course_trends'] = $this->Analytics_model->get_course_trends();
+        $data['alumni_growth_trend'] = $this->Analytics_model->get_alumni_growth_trend();
+        $data['skills_gap'] = $this->Analytics_model->get_curriculum_skills_gap();
 
         $this->load->view('analytics/graphs', $data);
     }
