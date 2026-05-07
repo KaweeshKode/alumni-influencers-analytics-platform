@@ -82,46 +82,55 @@
         <div class="chart-card">
             <h3>Alumni by Graduation Year</h3>
             <canvas id="graduationYearChart"></canvas>
+            <button type="button" class="btn" onclick="downloadChartImage('graduationYearChart', 'alumni_by_graduation_year.png')">Download PNG</button>
         </div>
 
         <div class="chart-card">
             <h3>Alumni Growth Trend</h3>
             <canvas id="alumniGrowthLineChart"></canvas>
+            <button type="button" class="btn" onclick="downloadChartImage('alumniGrowthLineChart', 'alumni_growth_trend.png')">Download PNG</button>
         </div>
 
         <div class="chart-card">
             <h3>Employment by Industry Sector</h3>
             <canvas id="industryChart"></canvas>
+            <button type="button" class="btn" onclick="downloadChartImage('industryChart', 'employment_by_industry.png')">Download PNG</button>
         </div>
 
         <div class="chart-card">
             <h3>Top Employers</h3>
             <canvas id="employerChart"></canvas>
+            <button type="button" class="btn" onclick="downloadChartImage('employerChart', 'top_employers.png')">Download PNG</button>
         </div>
 
         <div class="chart-card">
             <h3>Most Common Job Titles</h3>
             <canvas id="jobTitleChart"></canvas>
+            <button type="button" class="btn" onclick="downloadChartImage('jobTitleChart', 'common_job_titles.png')">Download PNG</button>
         </div>
 
         <div class="chart-card">
             <h3>Geographic Distribution</h3>
             <canvas id="geoChart"></canvas>
+            <button type="button" class="btn" onclick="downloadChartImage('geoChart', 'geographic_distribution.png')">Download PNG</button>
         </div>
 
         <div class="chart-card">
             <h3>Certification Trends</h3>
             <canvas id="certificationChart"></canvas>
+            <button type="button" class="btn" onclick="downloadChartImage('certificationChart', 'certification_trends.png')">Download PNG</button>
         </div>
 
         <div class="chart-card">
             <h3>Professional Course Trends</h3>
             <canvas id="courseChart"></canvas>
+            <button type="button" class="btn" onclick="downloadChartImage('courseChart', 'professional_course_trends.png')">Download PNG</button>
         </div>
 
         <div class="chart-card">
             <h3>Curriculum Skills Gap Radar</h3>
             <canvas id="skillsGapRadarChart"></canvas>
+            <button type="button" class="btn" onclick="downloadChartImage('skillsGapRadarChart', 'curriculum_skills_gap_radar.png')">Download PNG</button>
         </div>
     </div>
 
@@ -173,6 +182,19 @@
 </div>
 
 <script>
+
+function downloadChartImage(canvasId, filename) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) {
+        return;
+    }
+
+    const link = document.createElement('a');
+    link.href = canvas.toDataURL('image/png', 1.0);
+    link.download = filename;
+    link.click();
+}
+
 function labelsFrom(data) {
     return data.map(item => item.label || 'Unknown');
 }

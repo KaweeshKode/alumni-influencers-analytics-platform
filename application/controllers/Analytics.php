@@ -122,4 +122,50 @@ class Analytics extends CI_Controller
         fclose($output);
         exit;
     }
+
+    public function export_summary_csv()
+    {
+        $top_industry_sector = $this->Analytics_model->get_top_industry_sector();
+        $top_job_title = $this->Analytics_model->get_top_job_title();
+        $top_employer = $this->Analytics_model->get_top_employer();
+
+        $filename = 'analytics_summary_report_' . date('Y-m-d_H-i-s') . '.csv';
+
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+
+        $output = fopen('php://output', 'w');
+
+        fputcsv($output, ['Alumni Influencers Platform - University Analytics Summary Report']);
+        fputcsv($output, ['Generated At', date('Y-m-d H:i:s')]);
+        fputcsv($output, []);
+
+        fputcsv($output, ['Metric', 'Value']);
+        fputcsv($output, ['Total Alumni', $this->Analytics_model->get_total_alumni()]);
+        fputcsv($output, ['Completed Profiles', $this->Analytics_model->get_total_profiles()]);
+        fputcsv($output, ['Total Certifications', $this->Analytics_model->get_total_certifications()]);
+        fputcsv($output, ['Total Short Courses', $this->Analytics_model->get_total_courses()]);
+        fputcsv($output, []);
+
+        fputcsv($output, ['Insight', 'Value', 'Count']);
+        fputcsv($output, [
+            'Top Industry Sector',
+            $top_industry_sector ? $top_industry_sector->industry_sector : 'No data available',
+            $top_industry_sector ? $top_industry_sector->total : 0
+        ]);
+        fputcsv($output, [
+            'Most Common Job Title',
+            $top_job_title ? $top_job_title->current_job_title : 'No data available',
+            $top_job_title ? $top_job_title->total : 0
+        ]);
+        fputcsv($output, [
+            'Top Employer',
+            $top_employer ? $top_employer->current_company : 'No data available',
+            $top_employer ? $top_employer->total : 0
+        ]);
+
+        fclose($output);
+        exit;
+    }
+
 }

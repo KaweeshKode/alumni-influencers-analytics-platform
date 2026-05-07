@@ -16,6 +16,7 @@
         <a href="<?php echo site_url('analytics/dashboard'); ?>">Dashboard</a>
         <a href="<?php echo site_url('analytics/alumni'); ?>">View Alumni</a>
         <a href="<?php echo site_url('analytics/graphs'); ?>">Graphs</a>
+        <a href="<?php echo site_url('analytics/export-summary-csv'); ?>">Export Summary CSV</a>
         <a href="<?php echo site_url('auth/dashboard'); ?>">Main Dashboard</a>
         <a href="<?php echo site_url('auth/logout'); ?>">Logout</a>
     </div>
@@ -23,22 +24,22 @@
     <div class="cards">
         <div class="card">
             <h3>Total Alumni</h3>
-            <p class="stat-number"><?php echo (int)$total_alumni; ?></p>
+            <p><?php echo (int)$total_alumni; ?></p>
         </div>
 
         <div class="card">
             <h3>Completed Profiles</h3>
-            <p class="stat-number"><?php echo (int)$total_profiles; ?></p>
+            <p><?php echo (int)$total_profiles; ?></p>
         </div>
 
         <div class="card">
             <h3>Certifications</h3>
-            <p class="stat-number"><?php echo (int)$total_certifications; ?></p>
+            <p><?php echo (int)$total_certifications; ?></p>
         </div>
 
         <div class="card">
             <h3>Short Courses</h3>
-            <p class="stat-number"><?php echo (int)$total_courses; ?></p>
+            <p><?php echo (int)$total_courses; ?></p>
         </div>
     </div>
 
@@ -58,6 +59,10 @@
         <p>
             <strong>Top Employer:</strong>
             <?php echo $top_employer ? html_escape($top_employer->current_company) . ' (' . $top_employer->total . ')' : 'No data available'; ?>
+        </p>
+
+        <p>
+            <a class="btn" href="<?php echo site_url('analytics/export-summary-csv'); ?>">Download Summary Report CSV</a>
         </p>
     </div>
 

@@ -161,3 +161,4 @@ $route['analytics/dashboard'] = 'analytics/dashboard';
 $route['analytics/alumni'] = 'analytics/alumni';
 $route['analytics/graphs'] = 'analytics/graphs';
 $route['analytics/export-csv'] = 'analytics/export_csv';
+$route['analytics/export-summary-csv'] = 'analytics/export_summary_csv';
