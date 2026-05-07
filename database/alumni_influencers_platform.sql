@@ -43,7 +43,7 @@ CREATE TABLE `alumni_profiles` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id` (`user_id`),
   CONSTRAINT `fk_alumni_profile_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -52,7 +52,7 @@ CREATE TABLE `alumni_profiles` (
 
 LOCK TABLES `alumni_profiles` WRITE;
 /*!40000 ALTER TABLE `alumni_profiles` DISABLE KEYS */;
-INSERT INTO `alumni_profiles` VALUES (1,1,'0764852249','1999-07-31',2026,'Software Engineer','IFS','IT','Kalutara','Sri Lanka','Height is 5ft.','https://www.linkedin.com/pulse/fake-linkedin-profiles-paul-simiyu','b900a95788ac9f41aff3d5817585022a.png','2026-03-31 16:42:36','2026-03-31 16:45:02');
+INSERT INTO `alumni_profiles` VALUES (1,2,'0768524489','2003-04-16',2026,'Intern','WSO2','IT','Kalutara','Sri lanka','I\'m a hero','https://www.linkedin.com/in/test-user','6426458b87c1c769789d8d03b8dac7e5.png','2026-05-04 15:40:26','2026-05-04 15:40:26'),(2,4,'0753504489','2026-05-20',2026,'SE','IFS','SE','Colombo','SL','dfqerqerbqeb','https://www.linkedin.com/in/test-user','1cb9b029bddd414b19955b26771887d5.png','2026-05-04 17:23:00','2026-05-04 17:23:00'),(3,3,'0761895577','2026-05-06',2025,'SE','WSO2','SE','gampaha','SL','qeirnponwpfeovnenverjv iierov2ner qerv ef vpe','https://www.linkedin.com/in/test-user','879b9c77530d0cffa2032a96efce6885.png','2026-05-04 17:25:25','2026-05-04 17:25:25');
 /*!40000 ALTER TABLE `alumni_profiles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -81,7 +81,7 @@ CREATE TABLE `api_clients` (
 
 LOCK TABLES `api_clients` WRITE;
 /*!40000 ALTER TABLE `api_clients` DISABLE KEYS */;
-INSERT INTO `api_clients` VALUES (1,'Analytics Dashboard','analytics_dashboard','University analytics dashboard client',1,'2026-04-05 07:50:24'),(2,'Mobile AR App','mobile_ar_app','Mobile AR application client',1,'2026-04-05 07:50:24');
+INSERT INTO `api_clients` VALUES (1,'Mobile AR App','mobile_ar_app','Client application for retrieving the Alumni Influencer of the Day.',1,'2026-05-06 11:23:29'),(2,'Analytics Dashboard','analytics_dashboard','Client application for alumni analytics and dashboard data.',1,'2026-05-06 11:23:29');
 /*!40000 ALTER TABLE `api_clients` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -113,7 +113,7 @@ CREATE TABLE `api_tokens` (
   KEY `idx_api_tokens_prefix` (`token_prefix`),
   CONSTRAINT `fk_api_tokens_client` FOREIGN KEY (`client_id`) REFERENCES `api_clients` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_api_tokens_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -122,7 +122,7 @@ CREATE TABLE `api_tokens` (
 
 LOCK TABLES `api_tokens` WRITE;
 /*!40000 ALTER TABLE `api_tokens` DISABLE KEYS */;
-INSERT INTO `api_tokens` VALUES (1,1,1,'testing','f5fc4c9d4cde','80705334ea018bead93d22f6e7310807194da6e1205dba4b1e70723e91af9f15','[\"read:alumni\", \"read:analytics\"]','2026-04-05 06:57:59','2026-07-04 05:15:22',NULL,1,'2026-04-05 08:45:22'),(2,1,2,'mobile test','4cd5078ee93c','514776598fc4802a481972d058a8cb497385e843ff358baa1e5bdf96c151fa52','[\"read:alumni_of_day\"]','2026-04-05 06:49:47','2026-07-04 05:43:13','2026-04-05 06:57:08',0,'2026-04-05 09:13:13');
+INSERT INTO `api_tokens` VALUES (1,1,1,'AR App Token','e15dfb4a4a6a','2b8af82f85dd1abb3566f6dce1fdff627a19e14544f2944f4ae303d9ab23266d','[\"read:alumni_of_day\"]','2026-05-06 08:11:50','2026-08-04 07:57:41','2026-05-06 08:13:48',0,'2026-05-06 11:27:41'),(2,1,2,'Test Analytics','504455a5f9ee','2a1bbf23781d35abb45b79d5e7872279a6218fbe328253503f160e6bd47aa23f','[\"read:alumni\", \"read:analytics\"]','2026-05-06 10:36:33','2026-08-04 10:33:05',NULL,1,'2026-05-06 14:03:05'),(3,1,1,'Test Analy. for Mobile AR','51d8a14aab9a','c5c5967eab2d5d8492a26fe4980de1ee5fba4f3e859b0f05aab048c477a5502d','[\"read:alumni_of_day\"]','2026-05-06 10:36:23','2026-08-04 10:35:48',NULL,1,'2026-05-06 14:05:48');
 /*!40000 ALTER TABLE `api_tokens` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -152,7 +152,7 @@ CREATE TABLE `api_usage_logs` (
   CONSTRAINT `fk_api_usage_logs_client` FOREIGN KEY (`client_id`) REFERENCES `api_clients` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_api_usage_logs_token` FOREIGN KEY (`token_id`) REFERENCES `api_tokens` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_api_usage_logs_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -161,7 +161,7 @@ CREATE TABLE `api_usage_logs` (
 
 LOCK TABLES `api_usage_logs` WRITE;
 /*!40000 ALTER TABLE `api_usage_logs` DISABLE KEYS */;
-INSERT INTO `api_usage_logs` VALUES (1,2,2,1,'http://localhost/practice/cw/index.php/api/featured-today','GET','::1','PostmanRuntime/7.52.0',404,'2026-04-05 09:28:38'),(2,2,2,1,'http://localhost/practice/cw/index.php/api/featured-today','GET','::1','PostmanRuntime/7.52.0',404,'2026-04-05 09:28:58'),(3,2,2,1,'http://localhost/practice/cw/index.php/api/featured-today','GET','::1','PostmanRuntime/7.52.0',404,'2026-04-05 09:39:18'),(4,2,2,1,'http://localhost/practice/cw/index.php/Api/featured-today','GET','::1','PostmanRuntime/7.52.0',404,'2026-04-05 09:45:41'),(5,2,2,1,'http://localhost/practice/cw/index.php/Api/featured-today','GET','::1','PostmanRuntime/7.52.0',404,'2026-04-05 09:45:43'),(6,2,2,1,'http://localhost/practice/cw/index.php/api/featured-today','GET','::1','PostmanRuntime/7.52.0',404,'2026-04-05 09:45:50'),(7,1,1,1,'http://localhost/practice/cw/index.php/api/alumni','GET','::1','PostmanRuntime/7.52.0',200,'2026-04-05 09:48:22'),(8,1,1,1,'http://localhost/practice/cw/index.php/api/alumni','GET','::1','PostmanRuntime/7.52.0',200,'2026-04-05 09:48:34'),(9,2,2,1,'http://localhost/practice/cw/index.php/api/featured-today','GET','::1','PostmanRuntime/7.52.0',404,'2026-04-05 09:48:45'),(10,2,2,1,'http://localhost/practice/cw/index.php/Api/featured_today','GET','::1','PostmanRuntime/7.52.0',404,'2026-04-05 09:55:47'),(11,2,2,1,'http://localhost/practice/cw/index.php/api/featured-today','GET','::1','PostmanRuntime/7.52.0',404,'2026-04-05 10:03:07'),(12,1,1,1,'http://localhost/practice/cw/index.php/api/alumni','GET','::1','PostmanRuntime/7.52.0',200,'2026-04-05 10:03:26'),(13,1,1,1,'http://localhost/practice/cw/index.php/api/analytics-summary','GET','::1','PostmanRuntime/7.52.0',200,'2026-04-05 10:08:31'),(14,2,2,1,'http://localhost/practice/cw/index.php/api/featured-today','GET','::1','PostmanRuntime/7.52.0',404,'2026-04-05 10:19:47'),(15,2,2,1,'http://localhost/practice/cw/index.php/api/alumni','GET','::1','PostmanRuntime/7.52.0',403,'2026-04-05 10:26:21'),(16,1,1,1,'http://localhost/practice/cw/index.php/api/featured-today','GET','::1','PostmanRuntime/7.52.0',403,'2026-04-05 10:26:36'),(17,1,1,1,'http://localhost/practice/cw/index.php/api/alumni','GET','::1','PostmanRuntime/7.52.0',200,'2026-04-05 10:27:55'),(18,1,1,1,'http://localhost/practice/cw/index.php/api/analytics-summary','GET','::1','PostmanRuntime/7.52.0',200,'2026-04-05 10:27:59');
+INSERT INTO `api_usage_logs` VALUES (1,1,1,1,'http://localhost/practice/cw/index.php/api/featured-today','GET','::1','PostmanRuntime/7.54.0',404,'2026-05-06 11:30:43'),(2,1,1,1,'http://localhost/practice/cw/index.php/api/featured-today','GET','::1','PostmanRuntime/7.54.0',200,'2026-05-06 11:41:50'),(3,2,2,1,'http://localhost/practice/cw/index.php/api/analytics-summary','GET','::1','PostmanRuntime/7.54.0',200,'2026-05-06 14:04:04'),(4,2,2,1,'http://localhost/practice/cw/index.php/api/analytics-charts','GET','::1','PostmanRuntime/7.54.0',200,'2026-05-06 14:04:35'),(5,3,1,1,'http://localhost/practice/cw/index.php/api/featured-today','GET','::1','PostmanRuntime/7.54.0',200,'2026-05-06 14:06:23'),(6,2,2,1,'http://localhost/practice/cw/index.php/api/analytics-summary','GET','::1','PostmanRuntime/7.54.0',200,'2026-05-06 14:06:33'),(7,3,1,1,'http://localhost/practice/cw/index.php/api/analytics-summary','GET','::1','PostmanRuntime/7.54.0',403,'2026-05-06 14:06:40'),(8,3,1,1,'http://localhost/practice/cw/index.php/api/analytics-charts','GET','::1','PostmanRuntime/7.54.0',403,'2026-05-06 14:06:54');
 /*!40000 ALTER TABLE `api_usage_logs` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -185,7 +185,7 @@ CREATE TABLE `bid_notifications` (
   KEY `fk_bid_notifications_slot` (`slot_id`),
   CONSTRAINT `fk_bid_notifications_slot` FOREIGN KEY (`slot_id`) REFERENCES `featured_slots` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_bid_notifications_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -194,7 +194,7 @@ CREATE TABLE `bid_notifications` (
 
 LOCK TABLES `bid_notifications` WRITE;
 /*!40000 ALTER TABLE `bid_notifications` DISABLE KEYS */;
-INSERT INTO `bid_notifications` VALUES (1,1,1,'status_update','You are currently winning this slot.',0,'2026-04-04 10:06:28'),(2,1,1,'status_update','You are currently winning this slot.',0,'2026-04-04 10:07:48'),(3,2,1,'status_update','You are currently losing this slot.',0,'2026-04-04 11:55:29'),(4,2,1,'status_update','You are currently losing this slot.',0,'2026-04-04 11:55:56'),(5,2,1,'status_update','You are currently winning this slot.',0,'2026-04-04 11:56:12'),(6,1,1,'status_update','You are currently winning this slot.',0,'2026-04-04 11:56:47'),(7,2,1,'status_update','You are currently losing this slot.',0,'2026-04-04 11:56:54'),(8,2,1,'status_update','You are currently losing this slot.',0,'2026-04-04 13:07:37'),(9,1,1,'winner','Congratulations! You won the featured alumni slot for 2026-04-04.',0,'2026-04-04 14:13:52'),(10,2,1,'loser','Your bid was not selected for the featured alumni slot on 2026-04-04.',0,'2026-04-04 14:13:52'),(11,1,1,'status_update','You are currently winning this slot.',0,'2026-04-04 14:30:27'),(12,2,1,'status_update','You are currently losing this slot.',0,'2026-04-04 14:30:39'),(13,1,1,'status_update','You are currently winning this slot.',0,'2026-04-04 16:11:01'),(14,2,1,'status_update','You are currently winning this slot.',0,'2026-04-04 16:11:24'),(15,2,1,'winner','Congratulations! You won the featured alumni slot for 2026-04-04.',0,'2026-04-04 16:11:43'),(16,1,1,'loser','Your bid was not selected for the featured alumni slot on 2026-04-04.',0,'2026-04-04 16:11:43');
+INSERT INTO `bid_notifications` VALUES (1,3,1,'status_update','You are currently winning this slot.',0,'2026-05-04 17:27:39'),(2,4,1,'status_update','You are currently winning this slot.',0,'2026-05-04 17:31:16'),(3,4,1,'status_update','You are currently winning this slot.',0,'2026-05-04 17:32:20'),(4,4,1,'loser','Your bid was not selected for the featured alumni slot on 2026-05-04.',0,'2026-05-04 17:49:55'),(5,3,1,'winner','Congratulations! You won the featured alumni slot for 2026-05-04.',0,'2026-05-04 17:49:55');
 /*!40000 ALTER TABLE `bid_notifications` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -218,7 +218,7 @@ CREATE TABLE `bids` (
   KEY `fk_bids_user` (`user_id`),
   CONSTRAINT `fk_bids_slot` FOREIGN KEY (`slot_id`) REFERENCES `featured_slots` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_bids_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -227,7 +227,7 @@ CREATE TABLE `bids` (
 
 LOCK TABLES `bids` WRITE;
 /*!40000 ALTER TABLE `bids` DISABLE KEYS */;
-INSERT INTO `bids` VALUES (3,1,1,100.00,'lost','2026-04-04 16:11:01','2026-04-04 16:11:43'),(4,1,2,150.00,'won','2026-04-04 16:11:24','2026-04-04 16:11:43');
+INSERT INTO `bids` VALUES (1,1,3,100.00,'won','2026-05-04 17:27:39','2026-05-04 17:49:55'),(2,1,4,200.00,'lost','2026-05-04 17:31:16','2026-05-04 17:49:55');
 /*!40000 ALTER TABLE `bids` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -254,7 +254,7 @@ CREATE TABLE `ci_sessions` (
 
 LOCK TABLES `ci_sessions` WRITE;
 /*!40000 ALTER TABLE `ci_sessions` DISABLE KEYS */;
-INSERT INTO `ci_sessions` VALUES ('cs7f19chdafevetnmkaoghv4p36a6k89','127.0.0.1',1775366247,_binary '__ci_last_regenerate|i:1775366246;user_id|s:1:\"1\";user_email|s:15:\"kamal@iit.ac.lk\";user_name|s:12:\"Kamal Kumara\";logged_in|b:1;'),('dghj76bogq5gm5tbq1cgbou0qanj31v7','::1',1775365079,_binary '__ci_last_regenerate|i:1775364981;'),('farmlrcpbh8pd1lvc613122gs7ojt64k','127.0.0.1',1775358978,_binary '__ci_last_regenerate|i:1775358968;user_id|s:1:\"2\";user_email|s:17:\"ravindu@iit.ac.lk\";user_name|s:18:\"Ravindu Nidarshana\";logged_in|b:1;'),('g1bvi9drv3gqdeopn6fe7qoo2hd78gsd','127.0.0.1',1777389708,_binary '__ci_last_regenerate|i:1777389687;'),('ltsm8q1gr30tlrnl23ell0rqbq57rbcl','127.0.0.1',1775409364,_binary '__ci_last_regenerate|i:1775409364;'),('ngfc70p6ol3980nus0len59ssm8l45in','127.0.0.1',1775409357,_binary '__ci_last_regenerate|i:1775409354;');
+INSERT INTO `ci_sessions` VALUES ('nmmhuo8rsoce492p1sslk4vjjr3r8ret','127.0.0.1',1778094027,_binary '__ci_last_regenerate|i:1778094026;user_id|s:1:\"1\";user_email|s:15:\"test1@iit.ac.lk\";user_name|s:11:\"test1 test1\";user_role|s:9:\"developer\";logged_in|b:1;'),('poqnoeej6nmuvhq2mburvqmke7js9659','127.0.0.1',1778096699,_binary '__ci_last_regenerate|i:1778096614;user_id|s:1:\"2\";user_email|s:26:\"gajindu.20220183@iit.ac.lk\";user_name|s:19:\"gajindu kaweeshwara\";user_role|s:7:\"alumnus\";logged_in|b:1;');
 /*!40000 ALTER TABLE `ci_sessions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -276,7 +276,7 @@ CREATE TABLE `email_verification_tokens` (
   KEY `idx_email_verification_user` (`user_id`),
   KEY `idx_email_verification_expires` (`expires_at`),
   CONSTRAINT `fk_email_verification_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -285,7 +285,7 @@ CREATE TABLE `email_verification_tokens` (
 
 LOCK TABLES `email_verification_tokens` WRITE;
 /*!40000 ALTER TABLE `email_verification_tokens` DISABLE KEYS */;
-INSERT INTO `email_verification_tokens` VALUES (1,1,'3c5f4425d9354e3d009d18b2ff957823fd1cc1db0e4b7c93e8a61b781bbd53fe','2026-04-01 10:42:31','2026-03-31 10:46:24','2026-03-31 14:12:31'),(2,2,'907d22b258ddf61985a3d819d7a8090594c8bb4076eb42f46391ef3c01dc6a8b','2026-04-05 08:24:17','2026-04-04 08:24:24','2026-04-04 11:54:17');
+INSERT INTO `email_verification_tokens` VALUES (1,1,'1975c0a221e27765aa300b1d316620f2117aef44769e67b33945a3c7b1855cd1','2026-05-05 09:10:24','2026-05-04 09:13:04','2026-05-04 12:40:24'),(2,2,'db85426185310f969ff4538b3e94caa922fdbc25425943b54dbfb08ee285498e','2026-05-05 11:40:51','2026-05-04 11:41:20','2026-05-04 15:10:51'),(3,3,'5b03adb5105e6e3b7e71807df882168a78e65878ebafa6f09134c13f7fe00b5f','2026-05-05 12:51:48','2026-05-04 13:01:46','2026-05-04 16:21:48'),(4,4,'a196e4f3a84e27e49ad3013e45bb76ea457d8a6fbd1be0dad838dccbc99b610d','2026-05-05 13:09:02','2026-05-04 13:09:55','2026-05-04 16:39:02'),(5,5,'705addbc86dc4c79413697d8292b1057dbda9526f7b5699387aa9bddc4b4a997','2026-05-07 09:34:58','2026-05-06 09:35:51','2026-05-06 13:04:58');
 /*!40000 ALTER TABLE `email_verification_tokens` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -308,7 +308,7 @@ CREATE TABLE `featured_alumni` (
   KEY `fk_featured_alumni_user` (`user_id`),
   CONSTRAINT `fk_featured_alumni_slot` FOREIGN KEY (`slot_id`) REFERENCES `featured_slots` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_featured_alumni_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -317,7 +317,7 @@ CREATE TABLE `featured_alumni` (
 
 LOCK TABLES `featured_alumni` WRITE;
 /*!40000 ALTER TABLE `featured_alumni` DISABLE KEYS */;
-INSERT INTO `featured_alumni` VALUES (2,2,1,'2026-04-04','2026-04-04 16:11:43');
+INSERT INTO `featured_alumni` VALUES (16,4,1,'2026-05-04','2026-05-04 17:45:32'),(17,4,2,'2026-05-03','2026-05-04 17:45:32'),(18,4,3,'2026-05-02','2026-05-04 17:45:32'),(19,3,4,'2026-05-06','2026-05-06 11:36:15');
 /*!40000 ALTER TABLE `featured_alumni` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -341,7 +341,7 @@ CREATE TABLE `featured_slots` (
   UNIQUE KEY `slot_date` (`slot_date`),
   KEY `fk_featured_slots_winner_user` (`winner_user_id`),
   CONSTRAINT `fk_featured_slots_winner_user` FOREIGN KEY (`winner_user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -350,7 +350,7 @@ CREATE TABLE `featured_slots` (
 
 LOCK TABLES `featured_slots` WRITE;
 /*!40000 ALTER TABLE `featured_slots` DISABLE KEYS */;
-INSERT INTO `featured_slots` VALUES (1,'2026-04-04','awarded',2,4,'2026-04-04 12:41:43','2026-04-04 10:06:17','2026-04-04 16:11:43');
+INSERT INTO `featured_slots` VALUES (1,'2026-05-04','awarded',3,1,'2026-05-04 14:19:55','2026-05-04 15:17:29','2026-05-04 17:49:55'),(2,'2026-05-03','awarded',NULL,NULL,NULL,'2026-05-04 17:44:10','2026-05-04 17:44:10'),(3,'2026-05-02','awarded',NULL,NULL,NULL,'2026-05-04 17:44:10','2026-05-04 17:44:10'),(4,'2026-05-06','awarded',3,NULL,'2026-05-06 11:36:04','2026-05-06 11:36:04','2026-05-06 11:36:04');
 /*!40000 ALTER TABLE `featured_slots` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -374,7 +374,7 @@ CREATE TABLE `login_audit_logs` (
   KEY `idx_login_audit_user` (`user_id`),
   KEY `idx_login_audit_created` (`created_at`),
   CONSTRAINT `fk_login_audit_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -383,7 +383,7 @@ CREATE TABLE `login_audit_logs` (
 
 LOCK TABLES `login_audit_logs` WRITE;
 /*!40000 ALTER TABLE `login_audit_logs` DISABLE KEYS */;
-INSERT INTO `login_audit_logs` VALUES (1,1,'kamal@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:149.0) Gecko/20100101 Firefox/149.0','success',NULL,'2026-03-31 14:22:35'),(2,1,'kamal@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:149.0) Gecko/20100101 Firefox/149.0','failed','Wrong password','2026-03-31 14:23:13'),(3,1,'kamal@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:149.0) Gecko/20100101 Firefox/149.0','success',NULL,'2026-03-31 14:23:33'),(4,1,'kamal@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:149.0) Gecko/20100101 Firefox/149.0','failed','Wrong password','2026-03-31 14:26:27'),(5,1,'kamal@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:149.0) Gecko/20100101 Firefox/149.0','success',NULL,'2026-03-31 14:26:33'),(6,1,'kamal@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:149.0) Gecko/20100101 Firefox/149.0','success',NULL,'2026-03-31 14:36:28'),(7,1,'kamal@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:149.0) Gecko/20100101 Firefox/149.0','success',NULL,'2026-03-31 16:40:47'),(8,1,'kamal@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:149.0) Gecko/20100101 Firefox/149.0','success',NULL,'2026-04-04 09:45:09'),(9,2,'ravindu@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:149.0) Gecko/20100101 Firefox/149.0','success',NULL,'2026-04-04 11:54:48'),(10,1,'kamal@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:149.0) Gecko/20100101 Firefox/149.0','success',NULL,'2026-04-05 07:57:12'),(11,2,'ravindu@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:149.0) Gecko/20100101 Firefox/149.0','success',NULL,'2026-04-05 07:57:32');
+INSERT INTO `login_audit_logs` VALUES (1,2,'gajindu.20220183@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0','success',NULL,'2026-05-04 15:11:57'),(2,2,'gajindu.20220183@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0','success',NULL,'2026-05-04 15:16:04'),(3,3,'alumni1@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0','success',NULL,'2026-05-04 16:32:22'),(4,4,'alumni2@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0','success',NULL,'2026-05-04 16:40:37'),(5,3,'alumni1@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0','success',NULL,'2026-05-04 17:24:13'),(6,4,'alumni2@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0','success',NULL,'2026-05-04 17:31:04'),(7,1,'test1@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0','failed','Wrong password','2026-05-04 18:01:50'),(8,1,'test1@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0','failed','Wrong password','2026-05-04 18:02:05'),(9,1,'test1@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0','success',NULL,'2026-05-04 18:03:09'),(10,1,'test1@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0','success',NULL,'2026-05-04 20:42:46'),(11,1,'test1@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0','success',NULL,'2026-05-06 11:13:59'),(12,2,'gajindu.20220183@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0','success',NULL,'2026-05-06 11:14:52'),(13,2,'gajindu.20220183@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0','success',NULL,'2026-05-06 11:26:48'),(14,NULL,'client@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0','failed','Email not found','2026-05-06 13:04:34'),(15,5,'client@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0','success',NULL,'2026-05-06 13:06:10'),(16,5,'client@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0','success',NULL,'2026-05-06 13:17:26'),(17,3,'alumni1@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0','success',NULL,'2026-05-06 13:18:29'),(18,5,'client@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0','success',NULL,'2026-05-06 13:20:21'),(19,2,'gajindu.20220183@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0','success',NULL,'2026-05-06 13:28:02'),(20,1,'test1@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0','success',NULL,'2026-05-06 14:02:11'),(21,2,'gajindu.20220183@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0','success',NULL,'2026-05-06 18:50:54'),(22,1,'test1@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0','success',NULL,'2026-05-06 18:51:57'),(23,5,'client@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0','success',NULL,'2026-05-06 18:52:28'),(24,1,'test1@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0','success',NULL,'2026-05-06 19:05:30'),(25,5,'client@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0','success',NULL,'2026-05-06 19:06:05'),(26,2,'gajindu.20220183@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0','success',NULL,'2026-05-06 19:06:31'),(27,2,'gajindu.20220183@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0','success',NULL,'2026-05-06 19:30:28'),(28,1,'test1@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0','success',NULL,'2026-05-06 19:34:55'),(29,2,'gajindu.20220183@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0','success',NULL,'2026-05-06 22:39:09'),(30,1,'test1@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0','success',NULL,'2026-05-06 22:41:41'),(31,2,'gajindu.20220183@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0','success',NULL,'2026-05-07 00:30:42'),(32,1,'test1@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0','success',NULL,'2026-05-07 00:31:31'),(33,5,'client@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0','success',NULL,'2026-05-07 00:31:54'),(34,5,'client@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0','success',NULL,'2026-05-07 00:36:43'),(35,2,'gajindu.20220183@iit.ac.lk','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0','success',NULL,'2026-05-07 00:51:06');
 /*!40000 ALTER TABLE `login_audit_logs` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -405,7 +405,7 @@ CREATE TABLE `password_reset_tokens` (
   KEY `idx_password_reset_user` (`user_id`),
   KEY `idx_password_reset_expires` (`expires_at`),
   CONSTRAINT `fk_password_reset_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -414,7 +414,7 @@ CREATE TABLE `password_reset_tokens` (
 
 LOCK TABLES `password_reset_tokens` WRITE;
 /*!40000 ALTER TABLE `password_reset_tokens` DISABLE KEYS */;
-INSERT INTO `password_reset_tokens` VALUES (1,1,'6f38157bfcb97359a828c944614b88be1c0152cd869d470d9f244411e4e607de','2026-03-31 11:55:12','2026-03-31 10:55:51','2026-03-31 14:25:12');
+INSERT INTO `password_reset_tokens` VALUES (1,2,'c5da934bfeafe195baa0c3e1e22dd05aee1b54463b19d10279febf1a8b4536c3','2026-05-04 12:45:07','2026-05-04 11:45:42','2026-05-04 15:15:07'),(2,1,'7cdc7189b5018ae62a13a9a4a06ac015b16b38669493631d03f81d03a19296fb','2026-05-04 15:32:20','2026-05-04 14:32:48','2026-05-04 18:02:20');
 /*!40000 ALTER TABLE `password_reset_tokens` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -437,7 +437,7 @@ CREATE TABLE `profile_certifications` (
   PRIMARY KEY (`id`),
   KEY `fk_profile_certification_profile` (`profile_id`),
   CONSTRAINT `fk_profile_certification_profile` FOREIGN KEY (`profile_id`) REFERENCES `alumni_profiles` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -446,7 +446,7 @@ CREATE TABLE `profile_certifications` (
 
 LOCK TABLES `profile_certifications` WRITE;
 /*!40000 ALTER TABLE `profile_certifications` DISABLE KEYS */;
-INSERT INTO `profile_certifications` VALUES (1,1,'AWS','AWC Classroom','https://aws-certificates.com','2026-03-18','2026-03-31 18:15:22','2026-03-31 18:15:22'),(2,1,'Azure','Azure Classroom','https://azure-certificate.com','2026-02-22','2026-03-31 18:16:03','2026-03-31 18:16:14');
+INSERT INTO `profile_certifications` VALUES (2,1,'AWS Cloud Practitioner','Amazon Web Services','https://aws.amazon.com/certification/','2025-08-01','2026-05-06 15:29:35','2026-05-06 15:29:35'),(3,2,'Google Data Analytics Certificate','Google','https://grow.google/certificates/data-analytics/','2025-09-01','2026-05-06 15:29:35','2026-05-06 15:29:35'),(4,3,'AWS Cloud Practitioner','Amazon Web Services','https://aws.amazon.com/certification/','2025-10-01','2026-05-06 15:29:35','2026-05-06 15:29:35');
 /*!40000 ALTER TABLE `profile_certifications` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -469,7 +469,7 @@ CREATE TABLE `profile_degrees` (
   PRIMARY KEY (`id`),
   KEY `fk_profile_degree_profile` (`profile_id`),
   CONSTRAINT `fk_profile_degree_profile` FOREIGN KEY (`profile_id`) REFERENCES `alumni_profiles` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -478,7 +478,7 @@ CREATE TABLE `profile_degrees` (
 
 LOCK TABLES `profile_degrees` WRITE;
 /*!40000 ALTER TABLE `profile_degrees` DISABLE KEYS */;
-INSERT INTO `profile_degrees` VALUES (1,1,'CS','UOW','https://www.uow-cs-details.com','2024-03-13','2026-03-31 17:17:41','2026-03-31 17:17:41'),(2,1,'SE','UOW','https://www.uow-se-details.com','2020-05-21','2026-03-31 17:18:31','2026-03-31 17:18:31');
+INSERT INTO `profile_degrees` VALUES (1,1,'BSc Computer Science','IIT / University of Westminster','https://www.westminster.ac.uk/computer-science','2026-05-13','2026-05-04 15:43:57','2026-05-04 15:43:57');
 /*!40000 ALTER TABLE `profile_degrees` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -512,7 +512,6 @@ CREATE TABLE `profile_employment_history` (
 
 LOCK TABLES `profile_employment_history` WRITE;
 /*!40000 ALTER TABLE `profile_employment_history` DISABLE KEYS */;
-INSERT INTO `profile_employment_history` VALUES (1,1,'Intern Software Engineer','SimplyFy Labs LK','2025-02-10','2025-07-31',0,'Work as a Mobile Developer | React Native','2026-03-31 18:20:36','2026-03-31 18:20:36');
 /*!40000 ALTER TABLE `profile_employment_history` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -535,7 +534,7 @@ CREATE TABLE `profile_licences` (
   PRIMARY KEY (`id`),
   KEY `fk_profile_licence_profile` (`profile_id`),
   CONSTRAINT `fk_profile_licence_profile` FOREIGN KEY (`profile_id`) REFERENCES `alumni_profiles` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -544,7 +543,6 @@ CREATE TABLE `profile_licences` (
 
 LOCK TABLES `profile_licences` WRITE;
 /*!40000 ALTER TABLE `profile_licences` DISABLE KEYS */;
-INSERT INTO `profile_licences` VALUES (1,1,'Ethical Hacker','Cisco','http://cisco-ehc.com','2025-10-14','2026-03-31 18:18:10','2026-03-31 18:18:10'),(2,1,'IT Essentials','Cisco','http://cisco-itessen.com','2025-10-22','2026-03-31 18:18:42','2026-03-31 18:18:42');
 /*!40000 ALTER TABLE `profile_licences` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -567,7 +565,7 @@ CREATE TABLE `profile_short_courses` (
   PRIMARY KEY (`id`),
   KEY `fk_profile_short_course_profile` (`profile_id`),
   CONSTRAINT `fk_profile_short_course_profile` FOREIGN KEY (`profile_id`) REFERENCES `alumni_profiles` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -576,7 +574,7 @@ CREATE TABLE `profile_short_courses` (
 
 LOCK TABLES `profile_short_courses` WRITE;
 /*!40000 ALTER TABLE `profile_short_courses` DISABLE KEYS */;
-INSERT INTO `profile_short_courses` VALUES (1,1,'Full Stack Development','iCET','http://icet-full-stack-dev.com','2025-07-30','2026-03-31 18:19:27','2026-03-31 18:19:27');
+INSERT INTO `profile_short_courses` VALUES (2,1,'Docker Fundamentals','Coursera','https://www.coursera.org/','2025-07-01','2026-05-06 15:29:48','2026-05-06 15:29:48'),(3,2,'React Basics','Meta','https://www.coursera.org/','2025-08-01','2026-05-06 15:29:48','2026-05-06 15:29:48'),(4,3,'Docker Fundamentals','Coursera','https://www.coursera.org/','2025-09-01','2026-05-06 15:29:48','2026-05-06 15:29:48');
 /*!40000 ALTER TABLE `profile_short_courses` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -593,6 +591,7 @@ CREATE TABLE `users` (
   `password_hash` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `first_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `last_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `role` enum('alumnus','developer','client') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'alumnus',
   `is_email_verified` tinyint(1) NOT NULL DEFAULT '0',
   `account_status` enum('active','inactive','suspended') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'active',
   `last_login_at` datetime DEFAULT NULL,
@@ -600,7 +599,7 @@ CREATE TABLE `users` (
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `university_email` (`university_email`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -609,7 +608,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'kamal@iit.ac.lk','$2y$10$ai24uNE0DKuVcm4y66bnfu2l8GbOc5NT2DWJQqbgcgkmyIOIx8dJm','Kamal','Kumara',1,'active','2026-04-05 04:27:12','2026-03-31 14:12:31','2026-04-05 07:57:12'),(2,'ravindu@iit.ac.lk','$2y$10$0cJ88PN5gLptXKk3jfCsp.hZpjmLs66517DPcTyfpGNPythUr1l6i','Ravindu','Nidarshana',1,'active','2026-04-05 04:27:32','2026-04-04 11:54:17','2026-04-05 07:57:32');
+INSERT INTO `users` VALUES (1,'test1@iit.ac.lk','$2y$10$khUal5ZVBx1qoxn./MC9QOFlZ6dOD4N9KVr3VYNtHXMRzTCzjna7a','test1','test1','developer',1,'active','2026-05-06 21:01:31','2026-05-04 12:40:24','2026-05-07 00:31:31'),(2,'gajindu.20220183@iit.ac.lk','$2y$10$C1ndIBpRRbpiobJiHpemP.lhSvNn/6YW51dt8WbD5o1NKP7vDQUQu','gajindu','kaweeshwara','alumnus',1,'active','2026-05-06 21:21:06','2026-05-04 15:10:51','2026-05-07 00:51:06'),(3,'alumni1@iit.ac.lk','$2y$10$bRQRoqREgIjWUM05vc2EDuI4bNHrAiGeZZDSpUwBsQLKxdATsho92','alumni1','alum','alumnus',1,'active','2026-05-06 09:48:29','2026-05-04 16:21:48','2026-05-06 13:18:29'),(4,'alumni2@iit.ac.lk','$2y$10$hT0ctIB0lHYQkc8YiIiJoOPypqJu5rQii7zRAMDUHk/Xb1C77pC0e','alumni2','alum','alumnus',1,'active','2026-05-04 14:01:04','2026-05-04 16:39:02','2026-05-04 17:31:04'),(5,'client@iit.ac.lk','$2y$10$lnM9lCwKfApcWVbY5avBvumvb3Xm5ufrA3dJPclqw8d8d/hOegxzW','client','cl','client',1,'active','2026-05-06 21:06:43','2026-05-06 13:04:58','2026-05-07 00:36:43');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -622,4 +621,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-04  9:40:47
+-- Dump completed on 2026-05-07  8:53:47
