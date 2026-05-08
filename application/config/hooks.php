@@ -5,9 +5,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | -------------------------------------------------------------------------
 | Hooks
 | -------------------------------------------------------------------------
-| This file lets you define "hooks" to extend CI without hacking the core
-| files.  Please see the user guide for info:
-|
-|	https://codeigniter.com/userguide3/general/hooks.html
-|
+| This file defines application hooks used by CodeIgniter.
+| SecurityHeaders adds global HTTP security headers and controlled CORS
+| headers for API routes.
+| -------------------------------------------------------------------------
 */
+
+$hook['post_controller_constructor'][] = [
+    'class'    => 'SecurityHeaders',
+    'function' => 'set_headers',
+    'filename' => 'SecurityHeaders.php',
+    'filepath' => 'hooks'
+];

@@ -49,6 +49,111 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-$route['default_controller'] = 'welcome';
+
+$route['default_controller'] = 'auth/login';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+
+
+/*
+|--------------------------------------------------------------------------
+| Authentication Module
+|--------------------------------------------------------------------------
+*/
+$route['register'] = 'auth/register';
+$route['login'] = 'auth/login';
+$route['logout'] = 'auth/logout';
+$route['dashboard'] = 'auth/dashboard';
+
+$route['verify-email'] = 'auth/verify_email';
+$route['forgot-password'] = 'auth/forgot_password';
+$route['reset-password'] = 'auth/reset_password';
+
+
+/*
+|--------------------------------------------------------------------------
+| Profile Management Module
+|--------------------------------------------------------------------------
+*/
+$route['profile'] = 'profile/index';
+$route['profile/edit-main'] = 'profile/edit_main';
+
+$route['profile/degrees'] = 'profile/degrees';
+$route['profile/degrees/add'] = 'profile/add_degree';
+$route['profile/degrees/edit/(:num)'] = 'profile/edit_degree/$1';
+$route['profile/degrees/delete/(:num)'] = 'profile/delete_degree/$1';
+
+$route['profile/certifications'] = 'profile/certifications';
+$route['profile/certifications/add'] = 'profile/add_certification';
+$route['profile/certifications/edit/(:num)'] = 'profile/edit_certification/$1';
+$route['profile/certifications/delete/(:num)'] = 'profile/delete_certification/$1';
+
+$route['profile/licences'] = 'profile/licences';
+$route['profile/licences/add'] = 'profile/add_licence';
+$route['profile/licences/edit/(:num)'] = 'profile/edit_licence/$1';
+$route['profile/licences/delete/(:num)'] = 'profile/delete_licence/$1';
+
+$route['profile/short-courses'] = 'profile/short_courses';
+$route['profile/short-courses/add'] = 'profile/add_short_course';
+$route['profile/short-courses/edit/(:num)'] = 'profile/edit_short_course/$1';
+$route['profile/short-courses/delete/(:num)'] = 'profile/delete_short_course/$1';
+
+$route['profile/employment'] = 'profile/employment';
+$route['profile/employment/add'] = 'profile/add_employment';
+$route['profile/employment/edit/(:num)'] = 'profile/edit_employment/$1';
+$route['profile/employment/delete/(:num)'] = 'profile/delete_employment/$1';
+
+
+/*
+|--------------------------------------------------------------------------
+| Bidding Module
+|--------------------------------------------------------------------------
+*/
+$route['bidding'] = 'bidding/index';
+$route['bidding/place'] = 'bidding/place_bid';
+$route['bidding/notifications'] = 'bidding/notifications';
+
+
+/*
+|--------------------------------------------------------------------------
+| API Access Management Module
+|--------------------------------------------------------------------------
+*/
+$route['apitokens'] = 'ApiTokens/index';
+$route['apitokens/create'] = 'ApiTokens/create';
+$route['apitokens/revoke/(:num)'] = 'ApiTokens/revoke/$1';
+$route['apitokens/usage'] = 'ApiTokens/usage';
+
+
+/*
+|--------------------------------------------------------------------------
+| Public API Module
+|--------------------------------------------------------------------------
+*/
+$route['api/featured-today'] = 'Api/featuredToday';
+$route['api/alumni'] = 'Api/alumni';
+$route['api/analytics-summary'] = 'Api/analyticsSummary';
+$route['api/analytics-charts'] = 'Api/analyticsCharts';
+
+
+/*
+|--------------------------------------------------------------------------
+| Swagger / OpenAPI Documentation
+|--------------------------------------------------------------------------
+*/
+$route['docs'] = 'Docs/index';
+$route['api-docs'] = 'Docs/index';
+$route['openapi.json'] = 'OpenApi/json';
+
+
+/*
+|--------------------------------------------------------------------------
+| University Analytics Dashboard
+|--------------------------------------------------------------------------
+*/
+$route['analytics'] = 'analytics/dashboard';
+$route['analytics/dashboard'] = 'analytics/dashboard';
+$route['analytics/alumni'] = 'analytics/alumni';
+$route['analytics/graphs'] = 'analytics/graphs';
+$route['analytics/export-csv'] = 'analytics/export_csv';
+$route['analytics/export-summary-csv'] = 'analytics/export_summary_csv';

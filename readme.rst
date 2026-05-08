@@ -1,71 +1,446 @@
-###################
-What is CodeIgniter
-###################
+Alumni Influencers Analytics Platform
+=====================================
 
-CodeIgniter is an Application Development Framework - a toolkit - for people
-who build web sites using PHP. Its goal is to enable you to develop projects
-much faster than you could if you were writing code from scratch, by providing
-a rich set of libraries for commonly needed tasks, as well as a simple
-interface and logical structure to access these libraries. CodeIgniter lets
-you creatively focus on your project by minimizing the amount of code needed
-for a given task.
+Overview
+--------
 
-*******************
-Release Information
-*******************
+The Alumni Influencers Analytics Platform is a CodeIgniter PHP and MySQL web application developed for the Advanced Server-Side Web Programming coursework.
 
-This repo contains in-development code for future releases. To download the
-latest stable release please visit the `CodeIgniter Downloads
-<https://codeigniter.com/download>`_ page.
+The project combines both coursework parts into one integrated website:
 
-**************************
-Changelog and New Features
-**************************
+* **CW1**: Alumni Influencers platform with authentication, alumni profile management, blind bidding, API token security, public featured alumnus API, and Swagger/OpenAPI documentation.
+* **CW2**: University Analytics Dashboard that uses alumni profile data to provide filtered alumni views, charts, CSV export, and scoped analytics API endpoints.
 
-You can find a list of all changes for each release in the `user
-guide change log <https://github.com/bcit-ci/CodeIgniter/blob/develop/user_guide_src/source/changelog.rst>`_.
+Users log in once and are taken to a role-based dashboard. The available navigation options depend on the logged-in user role.
 
-*******************
-Server Requirements
-*******************
+User Roles
+----------
 
-PHP version 5.6 or newer is recommended.
+The system uses three user roles:
 
-It should work on 5.3.7 as well, but we strongly advise you NOT to run
-such old versions of PHP, because of potential security and performance
-issues, as well as missing features.
++------------+--------------------------------------------------------------+
+| Role       | Main Access                                                   |
++============+==============================================================+
+| alumnus    | Profile management, bidding, bid notifications                |
++------------+--------------------------------------------------------------+
+| developer  | API token management, API usage logs, Swagger docs, analytics |
++------------+--------------------------------------------------------------+
+| client     | University analytics dashboard, alumni filters, graphs, CSV   |
++------------+--------------------------------------------------------------+
 
-************
-Installation
-************
+Main Features
+-------------
 
-Please see the `installation section <https://codeigniter.com/userguide3/installation/index.html>`_
-of the CodeIgniter User Guide.
+CW1 Features
+~~~~~~~~~~~~
 
-*******
-License
-*******
+* University email registration using ``@iit.ac.lk`` domain validation.
+* Email verification using secure random tokens and SMTP email sending.
+* Secure login/logout using CodeIgniter sessions.
+* Password reset using secure random tokens and SMTP email sending.
+* Alumni profile creation and management.
+* Profile image upload/change support.
+* Manage degrees, certifications, licences, short professional courses, and employment history.
+* Blind bidding system for Alumni Influencer of the Day.
+* Increase-only bid updates.
+* Own bid status feedback without revealing the highest bid amount.
+* Monthly winning limit enforcement.
+* CLI-based winner selection for scheduled/automated processing.
+* Bearer-token protected public API.
+* API key generation, scope assignment, usage logging, and token revocation.
+* Swagger/OpenAPI documentation.
 
-Please see the `license
-agreement <https://github.com/bcit-ci/CodeIgniter/blob/develop/user_guide_src/source/license.rst>`_.
+CW2 Features
+~~~~~~~~~~~~
 
-*********
-Resources
-*********
+* University Analytics Dashboard for client/developer users.
+* Summary cards showing alumni, profiles, certifications, and course counts.
+* View alumni by programme, graduation year, and industry sector.
+* Graphs and trend charts using database data.
+* Certification and professional course trend charts.
+* CSV export for filtered alumni records.
+* Scoped analytics API endpoints.
+* API scope separation between Mobile AR App and Analytics Dashboard clients.
 
--  `User Guide <https://codeigniter.com/docs>`_
--  `Contributing Guide <https://github.com/bcit-ci/CodeIgniter/blob/develop/contributing.md>`_
--  `Language File Translations <https://github.com/bcit-ci/codeigniter3-translations>`_
--  `Community Forums <http://forum.codeigniter.com/>`_
--  `Community Wiki <https://github.com/bcit-ci/CodeIgniter/wiki>`_
--  `Community Slack Channel <https://codeigniterchat.slack.com>`_
+Technology Stack
+----------------
 
-Report security issues to our `Security Panel <mailto:security@codeigniter.com>`_
-or via our `page on HackerOne <https://hackerone.com/codeigniter>`_, thank you.
+* PHP
+* CodeIgniter 3
+* MySQL
+* HTML/CSS
+* JavaScript
+* Chart.js
+* Swagger/OpenAPI
+* XAMPP for local development
+* Gmail SMTP for email sending
 
-***************
-Acknowledgement
-***************
+Project Structure
+-----------------
 
-The CodeIgniter team would like to thank EllisLab, all the
-contributors to the CodeIgniter project and you, the CodeIgniter user.
+Important project folders/files:
+
+::
+
+    application/
+      controllers/
+        Auth.php
+        Profile.php
+        Bidding.php
+        Api.php
+        ApiTokens.php
+        Analytics.php
+        Docs.php
+        OpenApi.php
+
+      models/
+        User_model.php
+        Alumni_profile_model.php
+        Analytics_model.php
+        Api_token_model.php
+        Api_usage_log_model.php
+        Featured_alumni_model.php
+        Featured_slot_model.php
+        Bid_model.php
+
+      views/
+        auth/
+        profile/
+        bidding/
+        apitokens/
+        analytics/
+
+      docs/
+        openapi.json
+
+    assets/
+      css/
+        app.css
+
+    database/
+      alumni_influencers_platform.sql
+
+    .env.example
+    .gitignore
+    index.php
+    readme.rst
+
+Installation Guide
+------------------
+
+1. Clone the Repository
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Clone the repository into your XAMPP ``htdocs`` folder.
+
+Example path:
+
+::
+
+    C:\xampp\htdocs\practice\cw
+
+2. Start XAMPP
+~~~~~~~~~~~~~~
+
+Start the following services:
+
+* Apache
+* MySQL
+
+3. Import the Database
+~~~~~~~~~~~~~~~~~~~~~~
+
+Open phpMyAdmin or MySQL Workbench and import the SQL file:
+
+::
+
+    database/alumni_influencers_platform.sql
+
+The database name should be:
+
+::
+
+    alumni_influencers_platform
+
+4. Configure Database Connection
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Open:
+
+::
+
+    application/config/database.php
+
+Check that the local database settings match your XAMPP/MySQL configuration.
+
+Typical local setup:
+
+::
+
+    hostname: localhost
+    username: root
+    password: 
+    database: alumni_influencers_platform
+
+5. Configure Base URL
+~~~~~~~~~~~~~~~~~~~~~
+
+Open:
+
+::
+
+    application/config/config.php
+
+Set the base URL according to your local folder path.
+
+Example:
+
+::
+
+    $config['base_url'] = 'http://localhost/practice/cw/';
+
+6. Configure Email Sending
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Create a local ``.env`` file in the project root. Do not push this file to GitHub.
+
+Use ``.env.example`` as the template:
+
+::
+
+    SMTP_HOST=smtp.gmail.com
+    SMTP_PORT=465
+    SMTP_USER=your_email@gmail.com
+    SMTP_PASS=your_google_app_password_here
+    SMTP_CRYPTO=ssl
+    SMTP_FROM_EMAIL=your_email@gmail.com
+    SMTP_FROM_NAME="Alumni Influencers Platform"
+
+Important: ``SMTP_PASS`` should be a Google App Password, not the normal Gmail account password.
+
+The real ``.env`` file is ignored by Git using ``.gitignore``.
+
+7. Run the Application
+~~~~~~~~~~~~~~~~~~~~~~
+
+Open the application in the browser:
+
+::
+
+    http://localhost/practice/cw/index.php/login
+
+Useful URLs
+-----------
+
+Authentication
+~~~~~~~~~~~~~~
+
+::
+
+    /login
+    /register
+    /forgot-password
+    /dashboard
+    /logout
+
+Alumni Profile and Bidding
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+::
+
+    /profile
+    /profile/edit-main
+    /profile/degrees
+    /profile/certifications
+    /profile/licences
+    /profile/short-courses
+    /profile/employment
+    /bidding
+    /bidding/place
+    /bidding/notifications
+
+API Token Management
+~~~~~~~~~~~~~~~~~~~~
+
+::
+
+    /apitokens
+    /apitokens/usage
+
+Analytics Dashboard
+~~~~~~~~~~~~~~~~~~~
+
+::
+
+    /analytics
+    /analytics/alumni
+    /analytics/graphs
+    /analytics/export-csv
+
+Swagger/OpenAPI Documentation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+::
+
+    /api-docs
+    /openapi.json
+
+Public API Endpoints
+~~~~~~~~~~~~~~~~~~~~
+
+::
+
+    GET /api/featured-today
+    GET /api/alumni
+    GET /api/analytics-summary
+    GET /api/analytics-charts
+
+Test User Setup
+---------------
+
+Users can be registered through the normal registration page using an ``@iit.ac.lk`` email address.
+
+By default, newly registered users become:
+
+::
+
+    role = alumnus
+
+To manually assign a developer account:
+
+::
+
+    UPDATE users
+    SET role = 'developer'
+    WHERE university_email = 'developer@iit.ac.lk';
+
+To manually assign a client account:
+
+::
+
+    UPDATE users
+    SET role = 'client'
+    WHERE university_email = 'client@iit.ac.lk';
+
+For local testing, make sure test users are verified:
+
+::
+
+    UPDATE users
+    SET is_email_verified = 1,
+        account_status = 'active'
+    WHERE university_email = 'user@iit.ac.lk';
+
+API Key Scoping
+---------------
+
+The system supports scoped API keys.
+
++----------------------+------------------------------------+--------------------------------------+
+| Client Type          | Scopes                             | Main Access                           |
++======================+====================================+======================================+
+| Mobile AR App        | read:alumni_of_day                 | /api/featured-today                   |
++----------------------+------------------------------------+--------------------------------------+
+| Analytics Dashboard  | read:alumni, read:analytics        | /api/alumni, /api/analytics-*         |
++----------------------+------------------------------------+--------------------------------------+
+
+When a token does not have the required scope, the API returns:
+
+::
+
+    403 Forbidden
+
+When a token is missing, invalid, expired, or revoked, the API returns:
+
+::
+
+    401 Unauthorized
+
+API Testing Example
+-------------------
+
+Use Postman or a similar API client.
+
+Example request:
+
+::
+
+    GET http://localhost/practice/cw/index.php/api/featured-today
+
+Header:
+
+::
+
+    Authorization: Bearer YOUR_API_TOKEN_HERE
+
+Winner Selection CLI Command
+----------------------------
+
+The bidding winner selection is implemented as a CLI-safe command so it can be scheduled using cron or Windows Task Scheduler.
+
+For local XAMPP testing, run this from the project root:
+
+::
+
+    C:\xampp\php\php.exe index.php bidding award_today_slot
+
+This command selects the highest valid bidder, enforces the monthly winning limit, updates the featured slot, marks bid results, creates featured alumnus history, and creates bid notifications.
+
+Database Export
+---------------
+
+The database export is included in:
+
+::
+
+    database/alumni_influencers_platform.sql
+
+This file includes the final database structure and current demo data used for testing.
+
+Security Notes
+--------------
+
+Implemented security measures include:
+
+* Bcrypt password hashing.
+* Password strength validation.
+* Email verification before login.
+* Secure password reset tokens.
+* Single-use token handling.
+* CodeIgniter database sessions.
+* Session regeneration after login.
+* CSRF protection enabled.
+* Bearer token authentication for APIs.
+* API token hashing before database storage.
+* API token revocation.
+* API usage logging.
+* Role-based access control for dashboard modules.
+
+Final Demo Flow
+---------------
+
+Suggested viva/demo order:
+
+1. Register a user with ``@iit.ac.lk`` email.
+2. Show email verification link/email.
+3. Verify account and log in.
+4. Show role-based dashboard.
+5. As alumnus, manage profile sections.
+6. As alumnus, place/update a bid and view bid status.
+7. Run CLI winner selection.
+8. Show featured alumnus result and notifications.
+9. As developer, generate API tokens and view usage logs.
+10. Test API endpoint with valid token, wrong scope token, and revoked token.
+11. Open Swagger documentation.
+12. As client, open analytics dashboard.
+13. Filter alumni records.
+14. View charts and trends.
+15. Export filtered alumni records to CSV.
+
+Notes
+-----
+
+* The project is designed for local deployment using XAMPP.
+* The real ``.env`` file must not be committed to GitHub.
+* Use ``.env.example`` to understand required SMTP configuration.
+* Ensure the database is imported before testing the application.
