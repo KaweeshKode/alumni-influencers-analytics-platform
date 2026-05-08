@@ -113,11 +113,6 @@ $route['bidding'] = 'bidding/index';
 $route['bidding/place'] = 'bidding/place_bid';
 $route['bidding/notifications'] = 'bidding/notifications';
 
-/*
-| CLI command:
-| php index.php bidding award_today_slot
-*/
-
 
 /*
 |--------------------------------------------------------------------------
@@ -153,7 +148,7 @@ $route['openapi.json'] = 'OpenApi/json';
 
 /*
 |--------------------------------------------------------------------------
-| University Analytics Dashboard - CW2
+| University Analytics Dashboard
 |--------------------------------------------------------------------------
 */
 $route['analytics'] = 'analytics/dashboard';

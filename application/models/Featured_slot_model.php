@@ -27,6 +27,13 @@ class Featured_slot_model extends CI_Model
         ])->row();
     }
 
+    public function get_or_create_tomorrow_slot()
+    {
+        $tomorrow = date('Y-m-d', strtotime('+1 day'));
+
+        return $this->get_or_create_today_slot($tomorrow);
+    }
+
     public function get_by_id($id)
     {
         return $this->db->get_where($this->table, [

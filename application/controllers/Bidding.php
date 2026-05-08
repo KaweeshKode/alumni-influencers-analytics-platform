@@ -38,8 +38,8 @@ class Bidding extends CI_Controller
     {
         $user_id = $this->session->userdata('user_id');
 
-        // FIX: use real current day slot, not hardcoded test date
-        $slot = $this->Featured_slot_model->get_or_create_today_slot();
+        // Use tomorrow's slot because alumni bid today for the next day's featured slot
+        $slot = $this->Featured_slot_model->get_or_create_tomorrow_slot();
 
         $user_bid = $this->Bid_model->get_user_bid_for_slot($slot->id, $user_id);
 
@@ -62,7 +62,7 @@ class Bidding extends CI_Controller
     public function place_bid()
     {
         $user_id = $this->session->userdata('user_id');
-        $slot    = $this->Featured_slot_model->get_or_create_today_slot();
+        $slot    = $this->Featured_slot_model->get_or_create_tomorrow_slot();
 
         // Extra safety: do not allow bids on an already-awarded slot
         if ($slot->status !== 'open') {
@@ -141,7 +141,7 @@ class Bidding extends CI_Controller
         $this->load->view('bidding/notifications', $data);
     }
 
-    public function award_today_slot()
+    public function award_tomorrow_slot()
     {
         // FIX: do not allow normal browser users to trigger award
         if (!$this->input->is_cli_request()) {
@@ -149,21 +149,21 @@ class Bidding extends CI_Controller
             return;
         }
 
-        $slot = $this->Featured_slot_model->get_or_create_today_slot();
+        $slot = $this->Featured_slot_model->get_or_create_tomorrow_slot();
 
         if ($slot->status === 'awarded') {
-            echo "Today's slot has already been awarded." . PHP_EOL;
+            echo "Tomorrow's slot has already been awarded." . PHP_EOL;
             return;
         }
 
         $all_bids = $this->Bid_model->get_all_bids_for_slot($slot->id);
 
         if (empty($all_bids)) {
-            echo "No bids found for today." . PHP_EOL;
+            echo "No bids found for tomorrow's slot." . PHP_EOL;
             return;
         }
 
-        // FIX: re-check eligibility at award time
+        // re-check eligibility at award time
         $eligible_winning_bid = null;
 
         foreach ($all_bids as $bid) {
@@ -180,11 +180,11 @@ class Bidding extends CI_Controller
         }
 
         if (!$eligible_winning_bid) {
-            echo "No eligible bidders found for today's slot." . PHP_EOL;
+            echo "No eligible bidders found for tomorrow's slot." . PHP_EOL;
             return;
         }
 
-        // FIX: make awarding atomic
+        // make awarding atomic
         $this->db->trans_start();
 
         $this->Featured_slot_model->mark_awarded(
@@ -240,7 +240,7 @@ class Bidding extends CI_Controller
             }
         }
 
-        echo "Today's slot awarded successfully." . PHP_EOL;
+        echo "Tomorrow's slot awarded successfully." . PHP_EOL;
         echo "Bid result emails sent: " . $email_success_count . PHP_EOL;
 
         if ($email_fail_count > 0) {
